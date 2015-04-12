@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
 <script type="text/javascript" src="http://modernizr.com/downloads/modernizr-latest.js"></script>
 <title>Ex1</title>
 <style type="text/css">
 body {
 text-align: center;
+}
+body.day {
+background-image: url("http://subtlepatterns.com/patterns/hoffman.png");
+}
+body.night {
+background-image: url("http://subtlepatterns.com/patterns/slash_it.png");
 }
 h1 {
 font-size: 1.5em;
@@ -82,7 +89,7 @@ border-color: #888;
 }
 </style>
 </head>
-<body class="day" onload="loadTheme()">
+<body class="day" onload="init()">
 <div id="theme" onclick="clickTheme()"/><div id="switch" class="day"></div></div>
 <form id="registration" class="day">
 <div id="divMargin">
@@ -117,19 +124,7 @@ elem[x].style.transitionDuration = duration;
 }
 }
 
-function setTheme(theme) {
-if (startTheme == "night") {
-setTransition("night", null);
-startTheme = null;
-}
-if (theme == "day") {
-var oldCss = "day";
-var newCss = "night";
-}
-if (theme == "night") {
-var oldCss = "night";
-var newCss = "day";
-}
+function setTheme(oldCss, newCss) {
 var elem = document.getElementsByClassName(oldCss);
 for (var x = elem.length - 1; x >= 0; x--) {
 elem[x].className = newCss;
@@ -137,28 +132,43 @@ elem[x].className = newCss;
 localStorage.setItem("theme", newCss);
 }
 
-function clickTheme() {
-setTheme(getTheme());
-}
-
 function loadTheme() {
-if (getTheme() !== "day") {
-setTheme("day");
-setTransition("night", "0s");
-startTheme = "night";
-}
-}
-
-if (window.addEventListener) {
-window.addEventListener("storage", loadTheme);
+if (getTheme() == "day") {
+setTheme("night", "day");
 } else {
-window.attachEvent("onstorage", loadTheme);
-};
+setTheme("day", "night");
+}
+}
 
+function clickTheme() {
+if (startTheme != "day") {
+setTransition(getTheme(), null);
+startTheme = null;
+}
+if (getTheme() == "day")
+setTheme("day", "night");
+else
+setTheme("night", "day");
+}
+
+function init() {
 if (!Modernizr.csstransforms || !Modernizr.csstransitions)
 alert("CSS анимация не поддерживается, обновите браузер");
 if (!Modernizr.localstorage)
 alert("Локальное хранилище не поддерживается , обновите браузер");
+if (window.addEventListener) {
+window.addEventListener("storage", loadTheme);
+} else {
+window.attachEvent("onstorage", loadTheme);
+}
+startTheme = getTheme();
+if (startTheme != "day") {
+setTransition("day", "0s");
+loadTheme();
+} else {
+startTheme = null;
+}
+}
 
 </script>
 </html>
