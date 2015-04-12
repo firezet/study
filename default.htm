@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<script type="text/javascript" src="http://modernizr.com/downloads/modernizr-latest.js"></script>
+<title>Ex1</title>
+<style type="text/css">
+body {
+text-align: center;
+}
+h1 {
+font-size: 1.5em;
+}
+#theme {
+width: 50px;
+height: 20px;
+border-width: 1px;
+border-style: solid;
+background-color: #FFF;
+border-color: #888;
+position: relative;
+float: right;
+margin: 10px;
+}
+#switch {
+width: 50%;
+height: 100%;
+position: absolute;
+}
+#registration {
+overflow: auto;
+border-width: 1px;
+border-style: solid;
+border-radius: 10px;
+margin: 10px;
+padding: 10px;
+display: inline-block;
+}
+table {
+text-align: left;
+margin: 10px;
+padding: 5px;
+margin-left: auto;
+margin-right: auto;
+}
+.day {
+background-color: #FFF;
+color: #000;
+transition-duration: 0.5s;
+}
+.night {
+background-color: #000;
+color: #FFF;
+transition-duration: 0.5s;
+}
+#switch.day {
+background-color: #000;
+}
+#switch.night {
+background-color: #000;
+transform: translateX(100%);
+}
+#registration.day {
+background-color: #CCC;
+}
+#registration.night {
+background-color: #333;
+}
+input {
+width: 100%;
+}
+</style>
+</head>
+<body class="day" onload="loadTheme()">
+<div id="theme" onclick="clickTheme()"/><div id="switch" class="day"></div></div>
+<form id="registration" class="day">
+<h1>Форма регистрации</h1>
+<table>
+<tr><td>Имя* </td><td><input type="text" required class="day" placeholder="Имя"/></td></tr>
+<tr><td>Фамилия* </td><td><input type="text" required class="day" placeholder="Фамилия"/></td></tr>
+<tr><td>Отчество* </td><td><input type="text" required class="day" placeholder="Отчество"/></td></tr>
+<tr><td>Электронная почта* </td><td><input type="email" required class="day" placeholder="mail@example.com"/></td></tr>
+</table>
+<input type="submit" name="submit" class="day"/>
+</form>
+</body>
+<script type="text/javascript">
+
+function getTheme() {
+var storage = localStorage.getItem("theme");
+if (storage == null) {
+return "day";
+} else {
+return storage;
+}
+}
+
+function setTheme(theme) {
+if (theme == "day") {
+var oldCss = "day";
+var newCss = "night";
+}
+if (theme == "night") {
+var oldCss = "night";
+var newCss = "day";
+}
+var elem = document.getElementsByClassName(oldCss);
+for (var x = elem.length - 1; x >= 0; x--) {
+elem[x].className = newCss;
+}
+localStorage.setItem("theme", newCss);
+}
+
+function clickTheme() {
+setTheme(getTheme());
+}
+
+function loadTheme() {
+if (getTheme() == "day") {
+setTheme("night");
+} else {
+setTheme("day");
+}
+}
+
+if (window.addEventListener) {
+  window.addEventListener("storage", loadTheme);
+} else {
+  window.attachEvent("onstorage", loadTheme);
+};
+
+if (!Modernizr.csstransforms || !Modernizr.csstransitions)
+alert("CSS анимация не поддерживается, обновите браузер");
+if (!Modernizr.localstorage)
+alert("Локальное хранилище не поддерживается , обновите браузер");
+
+</script>
+</html>
