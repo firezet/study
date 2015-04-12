@@ -33,16 +33,23 @@ overflow: auto;
 border-width: 1px;
 border-style: solid;
 border-radius: 10px;
-margin: 10px;
-padding: 10px;
 display: inline-block;
+width: 100%;
+}
+@media screen and (min-width: 500px) {
+#registration {
+width: 500px;
+}
+}
+#divMargin {
+margin: 10px;
 }
 table {
 text-align: left;
 margin: 10px;
-padding: 5px;
 margin-left: auto;
 margin-right: auto;
+width: 100%;
 }
 .day {
 background-color: #FFF;
@@ -62,19 +69,23 @@ background-color: #000;
 transform: translateX(100%);
 }
 #registration.day {
-background-color: #CCC;
+background-color: #BBB;
 }
 #registration.night {
 background-color: #333;
 }
 input {
 width: 100%;
+border-width: 1px;
+border-style: solid;
+border-color: #888;
 }
 </style>
 </head>
 <body class="day" onload="loadTheme()">
 <div id="theme" onclick="clickTheme()"/><div id="switch" class="day"></div></div>
 <form id="registration" class="day">
+<div id="divMargin">
 <h1>Форма регистрации</h1>
 <table>
 <tr><td>Имя* </td><td><input type="text" required class="day" placeholder="Имя"/></td></tr>
@@ -83,9 +94,12 @@ width: 100%;
 <tr><td>Электронная почта* </td><td><input type="email" required class="day" placeholder="mail@example.com"/></td></tr>
 </table>
 <input type="submit" name="submit" class="day"/>
+</div>
 </form>
 </body>
 <script type="text/javascript">
+
+var startTheme;
 
 function getTheme() {
 var storage = localStorage.getItem("theme");
@@ -96,7 +110,18 @@ return storage;
 }
 }
 
+function setTransition(theme, duration) {
+var elem = document.getElementsByClassName(theme);
+for (var x = elem.length - 1; x >= 0; x--) {
+elem[x].style.transitionDuration = duration;
+}
+}
+
 function setTheme(theme) {
+if (startTheme == "night") {
+setTransition("night", null);
+startTheme = null;
+}
 if (theme == "day") {
 var oldCss = "day";
 var newCss = "night";
@@ -117,17 +142,17 @@ setTheme(getTheme());
 }
 
 function loadTheme() {
-if (getTheme() == "day") {
-setTheme("night");
-} else {
+if (getTheme() !== "day") {
 setTheme("day");
+setTransition("night", "0s");
+startTheme = "night";
 }
 }
 
 if (window.addEventListener) {
-  window.addEventListener("storage", loadTheme);
+window.addEventListener("storage", loadTheme);
 } else {
-  window.attachEvent("onstorage", loadTheme);
+window.attachEvent("onstorage", loadTheme);
 };
 
 if (!Modernizr.csstransforms || !Modernizr.csstransitions)
