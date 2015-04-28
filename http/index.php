@@ -13,10 +13,10 @@
 <a>Войти</a><br/>
 <a href="/newnote.php">Новая запись</a><br/>
 <a>Отправить сообщение</a><br/>
-<a>Фото</a><br/>
-<a>Файлы</a><br/>
+<a href="/photo.php">Фото</a><br/>
+<a href="/files.php">Файлы</a><br/>
 <a>Администрация</a><br/>
-<a href="inform.php">Информация</a><br/>
+<a href="/inform.php">Информация</a><br/>
 <a>Выйти</a><br/>
 </nav>
 <article>

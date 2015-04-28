@@ -10,17 +10,17 @@ $search = fill_get('search');
 </head>
 <body>
 <form action="<?php echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data" method="GET">
-<input type="text" name="search" placeholder="Поиск" value="<?php if ($search) echo $search;?>"/>
+<input type="text" name="search" placeholder="Поиск" value="<?php if (isset($search)) echo $search;?>"/>
 <input type="submit"/>
 </form>
 <?php
-if ($search) {
+if (isset($search)) {
 	require_once("db.php");
 	$search = str_replace(',', ' ', $search);
 	$search = str_replace('.', ' ', $search);
 	$search_array = explode(' ', $search);
 	foreach ($search_array as $elem) {
-		if ($elem) {
+		if (isset($elem)) {
 			$title_array[] = "title LIKE '%$elem%'";
 			$article_array[] = "article LIKE '%$elem%'";
 		}
