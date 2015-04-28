@@ -1,4 +1,5 @@
-﻿<!DOCTYPE HTML>
+<?php require_once("function.php");?>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -6,25 +7,26 @@
 </head>
 <body>
 <?php
-require_once("db.php");
+$id = fill_get('id');
+$art_id = fill_get('art_id');
 
-$id = $_GET['id'];
-$art_id = $_GET['art_id'];
-
-$confirm = $_POST['confirm'];
-if ($confirm) {
-mysqli_query($db, "DELETE FROM comments WHERE id = $id");
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+	require_once("db.php");
+	$confirm = fill_post('confirm');
+	if ($confirm) {
+		mysqli_query($db, "DELETE FROM comments WHERE id = $id");
+	}
 }
 
 $query = "SELECT id FROM comments WHERE id = $id";
 $result = mysqli_query($db, $query);
 if (mysqli_num_rows($result) > 0) {
-	?>
-<form method="POST">
+?>
+<form action="<?php echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data" method="POST">
 <input type="checkbox" name="confirm">
 <input type="submit"><br/>
 </form>
-	<?php
+<?php
 } else {
 	echo "Комментарий удален или не создан<br>";
 }

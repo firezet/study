@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -6,6 +6,10 @@
 </head>
 <body>
 <nav style="float:right">
+<form action="/search.php" enctype="multipart/form-data" method="GET">
+<input type="text" name="search" placeholder="Поиск"/>
+<input type="submit" value="Поиск"/>
+</form>
 <a>Войти</a><br/>
 <a href="/newnote.php">Новая запись</a><br/>
 <a>Отправить сообщение</a><br/>
@@ -23,7 +27,7 @@ $notes = mysqli_query($db, "SELECT * FROM notes ORDER BY id DESC");
 if (!$notes) {
 	echo "error";
 }
-while ($note = mysqli_fetch_array($notes)) {
+while ($note = mysqli_fetch_assoc($notes)) {
 	echo $note['created']."<br>";
 	echo $note['title']."<br>";
 	echo $note['article']."<br>";

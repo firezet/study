@@ -1,4 +1,5 @@
-﻿<!DOCTYPE HTML>
+<?php require_once("function.php");?>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -7,11 +8,11 @@
 <body>
 <?php
 require_once("db.php");
-$id = $_GET['id'];
+$id = fill_get('id');
 $query = "SELECT id, created, author, comment FROM comments WHERE art_id = $id ORDER BY id DESC";
 $comments = mysqli_query($db, $query);
 if (mysqli_num_rows($comments) > 0) {
-	while ($comm = mysqli_fetch_array($comments)) {
+	while ($comm = mysqli_fetch_assoc($comments)) {
 		echo $comm['created']."<br>";
 		echo $comm['author']."<br>";
 		echo $comm['comment']."<br>";
