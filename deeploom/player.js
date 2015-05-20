@@ -2,7 +2,7 @@ window.onload = function () {
 	_classTracks = "track";
 	_classSelected = "selected";
 	_queryTracks = "." + _classTracks;
-	_divSide = document.getElementById("divSide");
+	_menu = document.getElementById("divSide");
 	_playlist = document.getElementById("playlist");
 	_tracks = _playlist.getElementsByClassName(_classTracks);
 	_selected = _playlist.getElementsByClassName(_classSelected);
@@ -11,11 +11,11 @@ window.onload = function () {
 }
 
 function menuShow() {
-	_divSide.style.left = "0";
+	_menu.style.left = "0";
 }
 
 function menuHide() {
-	_divSide.style.left = "";
+	_menu.style.left = "";
 }
 
 function selectElement(element) {
