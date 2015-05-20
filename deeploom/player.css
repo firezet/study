@@ -1,0 +1,113 @@
+* {
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+#divSide {
+	background-color: #0FF;
+	top: 0;
+	left: 0;
+	bottom: 60px; /*divControls height*/
+	width: 300px;
+	overflow-y: auto;
+	position: fixed;
+}
+
+#buttonHide {
+	display: none;
+}
+
+#divMain {
+	margin-left: 300px; /*divSide width*/
+	margin-bottom: 60px; /*divControls height*/
+}
+
+#divBar {
+	background-color: #F00;
+	display: none;
+}
+
+#divPlaylist {
+	background-color: #00F;
+	color: #FFF;
+	padding: 5px;
+}
+
+#divControls {
+	background-color: #F0F;
+	position: fixed;
+	width: 100%;
+	height: 60px;
+	bottom: 0;
+	z-index: 50;
+}
+
+#playlist {
+	list-style-image: none;
+	overflow-x: hidden;
+}
+
+.album {
+	clear: both;
+}
+
+.albumArt {
+	float: left;
+	width: 100px;
+	padding: 5px;
+}
+
+.albumList {
+	overflow: auto;
+}
+
+.selected {
+	font-weight: bold;
+}
+
+.controls {
+	background-color: #0F0;
+	display: inline-block;
+	width: 100px;
+	height: 100%;
+}
+
+@media screen and (max-width: 800px) {
+	#divMain {
+		margin-left: 0;
+	}
+	#divSide {
+		left: -100%;
+	}
+	#divBar {
+		display: block;
+	}
+	#buttonHide {
+		display: block;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	#divSide {
+		width: 100%;
+	}
+	.albumArt {
+		width: 50px;
+	}
+	.controls {
+		width: 33%;
+	}
+}
+
+@media screen and (max-height: 300px) {
+	#divControls {
+		height: 30px;
+	}
+	#divSide {
+		bottom: 30px;
+	}
+	#divMain {
+		margin-bottom: 30px;
+	}
+}
