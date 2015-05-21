@@ -4,8 +4,11 @@ window.onload = function () {
 	_queryTracks = "." + _classTracks;
 	_menu = document.getElementById("divSide");
 	_bar = document.getElementById("divBar");
-	_controls = document.getElementById("divControls");
 	_playlist = document.getElementById("playlist");
+	_controls = document.getElementById("divControls");
+	_audio = document.getElementById("audio");
+	_sourceMp4 = document.getElementById("sourceMp4");
+	_sourceOgg = document.getElementById("sourceOgg");
 	_tracks = _playlist.getElementsByClassName(_classTracks);
 	_selected = _playlist.getElementsByClassName(_classSelected);
 
@@ -89,7 +92,7 @@ function playStop() {
 }
 
 function playPause() {
-	playlistAdd("[{\"artist\": \"artister\", \"album\": \"albumer\", \"year\": 2007, \"genre\": \"songer\", \"tracks\": [{\"number\": 1, \"title\": \"track01\", \"artist\": \"artist01\", \"path\": \"somepath01\"},{\"number\": 3, \"title\": \"track03\", \"artist\": \"artist04\", \"path\": \"somepath\"},{\"number\": 10, \"title\": \"track\", \"path\": \"somepathz\"}]}]");
+	playlistAdd("[{\"artist\": \"artister\", \"album\": \"albumer\", \"year\": 2007, \"genre\": \"songer\", \"tracks\": [{\"number\": 1, \"title\": \"track01\", \"artist\": \"artist01\", \"src\": \"somepath01\"},{\"number\": 3, \"title\": \"track03\", \"artist\": \"artist04\", \"src\": \"somepath\"},{\"number\": 10, \"title\": \"track\", \"src\": \"somepathz\"}]}]");
 }
 
 function playNext() {
