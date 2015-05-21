@@ -3,6 +3,8 @@ window.onload = function () {
 	_classSelected = "selected";
 	_queryTracks = "." + _classTracks;
 	_menu = document.getElementById("divSide");
+	_bar = document.getElementById("divBar");
+	_controls = document.getElementById("divControls");
 	_playlist = document.getElementById("playlist");
 	_tracks = _playlist.getElementsByClassName(_classTracks);
 	_selected = _playlist.getElementsByClassName(_classSelected);
@@ -26,6 +28,44 @@ function selectElement(element) {
 			}
 		}
 		element.classList.add(_classSelected);
+	}
+}
+
+function scrollOffset(element) {
+	if (element) {
+		var offsetTop = window.pageYOffset + _bar.offsetHeight;
+		var offsetBottom = window.pageYOffset + window.innerHeight - _controls.offsetHeight;
+		if ((element.offsetTop < offsetTop) || (element.offsetTop + element.offsetHeight > offsetBottom)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function scrollTop(element) {
+	if (element) {
+		var offset = element.offsetTop - _bar.offsetHeight;
+		if (scrollOffset(element)) {
+			window.scrollTo(0, offset);
+		}
+	}
+}
+
+function scrollBottom(element) {
+	if (element) {
+		var offset = element.offsetTop + element.offsetHeight - window.innerHeight + _controls.offsetHeight;
+		if (scrollOffset(element)) {
+			window.scrollTo(0, offset);
+		}
+	}
+}
+
+function scrollCenter(element) {
+	if (element) {
+		var offset = element.offsetTop + (element.offsetHeight / 2) - ((window.innerHeight - _controls.offsetHeight + _bar.offsetHeight) / 2);
+		if (scrollOffset(element)) {
+			window.scrollTo(0, offset);
+		}
 	}
 }
 
@@ -81,40 +121,40 @@ function playPause() {
 }
 
 function playNext() {
+	var element = _tracks[0];
 	if (_selected[0]) {
 		if (_selected[0].nextElementSibling) {
-			selectElement(_selected[0].nextElementSibling);
-			return;
+			element = _selected[0].nextElementSibling;
 		} else {
 			var nextParent = _selected[0].parentNode.parentNode.nextElementSibling;
 			if (nextParent) {
 				var nextChild = nextParent.querySelector(_queryTracks);
 				if (nextChild) {
-					selectElement(nextChild);
-					return;
+					element = nextChild;
 				}
 			}
 		}
 	}
-	selectElement(_tracks[0]);
+	selectElement(element);
+	scrollBottom(element);
 }
 
 function playPrev() {
+	var element = _tracks[_tracks.length - 1];
 	if (_selected[0]) {
 		if (_selected[0].previousElementSibling) {
-			selectElement(_selected[0].previousElementSibling);
-			return;
+			element = _selected[0].previousElementSibling;
 		} else {
 			var prevParent = _selected[0].parentNode.parentNode.previousElementSibling;
 			if (prevParent) {
 				var prevChilds = prevParent.querySelectorAll(_queryTracks);
 				var prevChild = prevChilds[prevChilds.length - 1];
 				if (prevChild) {
-					selectElement(prevChild);
-					return;
+					element = prevChild;
 				}
 			}
 		}
 	}
-	selectElement(_tracks[_tracks.length - 1]);
+	selectElement(element);
+	scrollTop(element);
 }
