@@ -31,40 +31,12 @@ function selectElement(element) {
 	}
 }
 
-function scrollOffset(element) {
+function scrollElement(element) {
 	if (element) {
 		var offsetTop = window.pageYOffset + _bar.offsetHeight;
 		var offsetBottom = window.pageYOffset + window.innerHeight - _controls.offsetHeight;
 		if ((element.offsetTop < offsetTop) || (element.offsetTop + element.offsetHeight > offsetBottom)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function scrollTop(element) {
-	if (element) {
-		var offset = element.offsetTop - _bar.offsetHeight;
-		if (scrollOffset(element)) {
-			window.scrollTo(0, offset);
-		}
-	}
-}
-
-function scrollBottom(element) {
-	if (element) {
-		var offset = element.offsetTop + element.offsetHeight - window.innerHeight + _controls.offsetHeight;
-		if (scrollOffset(element)) {
-			window.scrollTo(0, offset);
-		}
-	}
-}
-
-function scrollCenter(element) {
-	if (element) {
-		var offset = element.offsetTop + (element.offsetHeight / 2) - ((window.innerHeight - _controls.offsetHeight + _bar.offsetHeight) / 2);
-		if (scrollOffset(element)) {
-			window.scrollTo(0, offset);
+			window.scrollTo(0, element.offsetTop + (element.offsetHeight / 2) - ((window.innerHeight - _controls.offsetHeight + _bar.offsetHeight) / 2));
 		}
 	}
 }
@@ -136,7 +108,7 @@ function playNext() {
 		}
 	}
 	selectElement(element);
-	scrollBottom(element);
+	scrollElement(element);
 }
 
 function playPrev() {
@@ -156,5 +128,5 @@ function playPrev() {
 		}
 	}
 	selectElement(element);
-	scrollTop(element);
+	scrollElement(element);
 }
