@@ -6,7 +6,7 @@
 <title>Новый комментарий</title>
 </head>
 <body>
-<form action="<?php echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data" method="POST">
+<form action="<?php echo $_SERVER['REQUEST_URI'];?>" enctype="multipart/form-data" method="POST">
 Author <input type="text" name="author" maxlength="20"/><br/>
 Comment <textarea name="comment" maxlength="255"></textarea><br/>
 <input type="hidden" name="created" value="<?php echo date("Y-m-d");?>"/>
