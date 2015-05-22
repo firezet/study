@@ -6,6 +6,8 @@ window.onload = function () {
 	_bar = document.getElementById("divBar");
 	_playlist = document.getElementById("playlist");
 	_controls = document.getElementById("divControls");
+	_controlPlay = document.getElementById("controlPlay");
+	_controlPlayPause = "url(\"pause.svg\")"
 	_audio = document.getElementById("audio");
 	_sourceMp4 = document.getElementById("sourceMp4");
 	_sourceOgg = document.getElementById("sourceOgg");
@@ -108,8 +110,10 @@ function playStop() {
 
 function playPause() {
 	if (!_audio.paused) {
+		_controlPlay.style.backgroundImage = "";
 		playStop();
 	} else {
+		_controlPlay.style.backgroundImage = _controlPlayPause;
 		playPlay();
 	}
 }

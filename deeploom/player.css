@@ -48,6 +48,18 @@
 	z-index: 50;
 }
 
+#controlPrev {
+	background-image: url("prev.svg");
+}
+
+#controlPlay {
+	background-image: url("play.svg");
+}
+
+#controlNext {
+	background-image: url("next.svg");
+}
+
 #playlist {
 	list-style-image: none;
 	overflow-x: hidden;
@@ -73,6 +85,9 @@
 
 .controls {
 	background-color: #0F0;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
 	display: inline-block;
 	width: 100px;
 	height: 100%;
