@@ -98,6 +98,7 @@ function playlistAdd(json) {
 
 function playPlay() {
 	if ( _sourceMp4.getAttribute("src") && _sourceOgg.getAttribute("src") ) {
+		_controlPlay.style.backgroundImage = _controlPlayPause;
 		_audio.play();
 	} else {
 		playNext();
@@ -105,15 +106,14 @@ function playPlay() {
 }
 
 function playStop() {
+	_controlPlay.style.backgroundImage = "";
 	_audio.pause();
 }
 
 function playPause() {
 	if (!_audio.paused) {
-		_controlPlay.style.backgroundImage = "";
 		playStop();
 	} else {
-		_controlPlay.style.backgroundImage = _controlPlayPause;
 		playPlay();
 	}
 }
