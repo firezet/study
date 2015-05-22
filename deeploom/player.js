@@ -13,6 +13,8 @@ window.onload = function () {
 	_selected = _playlist.getElementsByClassName(_classSelected);
 
 	_playlist.addEventListener("click", clickElement);
+	_audio.addEventListener("ended", playNext);
+	_audio.addEventListener("error", playNext);
 }
 
 function menuShow() {
@@ -31,6 +33,14 @@ function selectElement(element) {
 			}
 		}
 		element.classList.add(_classSelected);
+		var name = element.getAttribute("src");
+		if (name) {
+			_sourceMp4.setAttribute("src", name + ".mp4");
+			_sourceOgg.setAttribute("src", name + ".ogg");
+			_audio.load();
+			scrollElement(element);
+			playPlay();
+		}
 	}
 }
 
@@ -85,14 +95,23 @@ function playlistAdd(json) {
 }
 
 function playPlay() {
+	if ( _sourceMp4.getAttribute("src") && _sourceOgg.getAttribute("src") ) {
+		_audio.play();
+	} else {
+		playNext();
+	}
 }
 
 function playStop() {
-	alert("Stop");
+	_audio.pause();
 }
 
 function playPause() {
-	playlistAdd("[{\"artist\": \"artister\", \"album\": \"albumer\", \"year\": 2007, \"genre\": \"songer\", \"tracks\": [{\"number\": 1, \"title\": \"track01\", \"artist\": \"artist01\", \"src\": \"somepath01\"},{\"number\": 3, \"title\": \"track03\", \"artist\": \"artist04\", \"src\": \"somepath\"},{\"number\": 10, \"title\": \"track\", \"src\": \"somepathz\"}]}]");
+	if (!_audio.paused) {
+		playStop();
+	} else {
+		playPlay();
+	}
 }
 
 function playNext() {
@@ -111,7 +130,6 @@ function playNext() {
 		}
 	}
 	selectElement(element);
-	scrollElement(element);
 }
 
 function playPrev() {
@@ -131,5 +149,10 @@ function playPrev() {
 		}
 	}
 	selectElement(element);
-	scrollElement(element);
+}
+
+//temp
+
+function add() {
+	playlistAdd("[{\"artist\": \"artister\", \"album\": \"albumer\", \"year\": 2007, \"genre\": \"songer\", \"tracks\": [{\"number\": 1, \"title\": \"track01\", \"artist\": \"artist01\", \"src\": \"1\"},{\"number\": 3, \"title\": \"track03\", \"artist\": \"artist04\", \"src\": \"2\"},{\"number\": 10, \"title\": \"track\", \"src\": \"3\"}]}]");
 }
