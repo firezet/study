@@ -1,4 +1,5 @@
 window.onload = function () {
+	_metadata = false;
 	_classTracks = "track";
 	_classSelected = "selected";
 	_queryTracks = "." + _classTracks;
@@ -11,7 +12,7 @@ window.onload = function () {
 	_progressLoad = document.getElementById("progressLoad");
 	_progressPlay = document.getElementById("progressPlay");
 	_progressText = document.getElementById("progressText");
-	_controlPlayPause = "url(\"pause.svg\")"
+	_controlPlayPause = "url(\"/pause.svg\")"
 	_audio = document.getElementById("audio");
 	_sourceMp4 = document.getElementById("sourceMp4");
 	_sourceOgg = document.getElementById("sourceOgg");
@@ -25,6 +26,7 @@ window.onload = function () {
 	_audio.addEventListener("timeupdate", progressPlay);
 	_progressLoad.addEventListener("click", progressClick);
 	_progressPlay.addEventListener("click", progressClick);
+	_audio.addEventListener("loadedmetadata", metadataLoad);
 }
 
 function menuShow() {
@@ -45,8 +47,9 @@ function selectElement(element) {
 		element.classList.add(_classSelected);
 		var name = element.getAttribute("src");
 		if (name) {
-			_sourceMp4.setAttribute("src", name + ".mp4");
-			_sourceOgg.setAttribute("src", name + ".ogg");
+			_sourceMp4.setAttribute("src", "/getsource.php?id=" + name + "&format=null.mp4");
+			_sourceOgg.setAttribute("src", "/getsource.php?id=" + name + "&format=null.ogg");
+			_metadata = false;
 			_audio.load();
 			scrollElement(element);
 			playPlay();
@@ -81,10 +84,13 @@ function playlistAdd(json) {
 		if (tracks[x]["tracks"].length > 0) {
 			var album = document.createElement("div");
 			var albumArt = document.createElement("img");
+			var albumTitle = document.createElement("div");
 			var albumList = document.createElement("div");
 			album.setAttribute("class", "album");
 			albumArt.setAttribute("class", "albumArt");
-			albumArt.setAttribute("src", "album.svg");
+			albumArt.setAttribute("src", "getart.php?id=" + tracks[x]["art"]);
+			albumTitle.setAttribute("class", "albumTitle");
+			albumTitle.innerHTML = tracks[x]["artist"] + " - " + tracks[x]["album"] + " (" + tracks[x]["year"] + ", " + tracks[x]["genre"] + ")"
 			albumList.setAttribute("class", "albumList");
 			for (y = 0; y < tracks[x]["tracks"].length; y++) {
 				var elem = tracks[x]["tracks"][y];
@@ -98,6 +104,7 @@ function playlistAdd(json) {
 				albumList.appendChild(track);
 			}
 			album.appendChild(albumArt);
+			album.appendChild(albumTitle);
 			album.appendChild(albumList);
 			_playlist.appendChild(album);
 		}
@@ -164,12 +171,10 @@ function playPrev() {
 }
 
 function progressLoad() {
-	try {
+	if (_metadata) {
 		var load = ((100 / _audio.duration) * _audio.buffered.end(0));
-	} catch (err) {
-		var load = 100;
+		_progressLoad.style.width = load + "%";
 	}
-	_progressLoad.style.width = load + "%";
 }
 
 function secondsString(time) {
@@ -178,23 +183,45 @@ function secondsString(time) {
 	minutes = Math.floor(minutes);
 	var seconds = time - minutes * 60;
 	seconds = Math.floor(seconds);
+	if (seconds < 10) {
+		seconds = "0" + seconds;
+	}
 	return minutes + ":" + seconds;
 }
 
 function progressPlay() {
-	var play = (100 / _audio.duration) * _audio.currentTime;
-	var time = secondsString(_audio.currentTime) + "/" + secondsString(_audio.duration);
-	_progressPlay.style.width = play + "%";
-	_progressText.innerHTML = time;
+	if (_metadata) {
+		var play = (100 / _audio.duration) * _audio.currentTime;
+		var time = secondsString(_audio.currentTime) + "/" + secondsString(_audio.duration);
+		_progressPlay.style.width = play + "%";
+		_progressText.innerHTML = time;
+	}
 }
 
 function progressClick(element) {
-	var time = (_audio.duration / 100) * (100 / _progressBar.clientWidth) * (element.clientX - _progressBar.offsetLeft);
-	_audio.currentTime = time;
-};
+	if (_metadata) {
+		var time = (_audio.duration / 100) * (100 / _progressBar.clientWidth) * (element.clientX - _progressBar.offsetLeft);
+		_audio.currentTime = time;
+	}
+}
+
+function metadataLoad() {
+	_metadata = true;
+	progressLoad();
+}
 
 //temp
 
 function add() {
-	playlistAdd("[{\"artist\": \"artister\", \"album\": \"albumer\", \"year\": 2007, \"genre\": \"songer\", \"tracks\": [{\"number\": 1, \"title\": \"track01\", \"artist\": \"artist01\", \"src\": \"1\"},{\"number\": 3, \"title\": \"track03\", \"artist\": \"artist04\", \"src\": \"2\"},{\"number\": 10, \"title\": \"track\", \"src\": \"3\"}]}]");
+	var xmlhttp;
+	if (window.XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest();
+	}
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
+			playlistAdd(xmlhttp.responseText);
+		}
+	}
+	xmlhttp.open("GET", "/getlist.php", true);
+	xmlhttp.send();
 }

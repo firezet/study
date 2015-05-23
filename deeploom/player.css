@@ -49,15 +49,15 @@
 }
 
 #controlPrev {
-	background-image: url("prev.svg");
+	background-image: url("/prev.svg");
 }
 
 #controlPlay {
-	background-image: url("play.svg");
+	background-image: url("/play.svg");
 }
 
 #controlNext {
-	background-image: url("next.svg");
+	background-image: url("/next.svg");
 }
 
 #playlist {
@@ -98,6 +98,10 @@
 	float: left;
 	width: 100px;
 	padding: 5px;
+}
+
+.albumTitle {
+	font-size: 1.2em;
 }
 
 .albumList {
@@ -144,7 +148,10 @@
 		width: 50px;
 	}
 	.controls {
-		width: 33%;
+		width: 33.3%;
+	}
+	#divProgress {
+		display: none;
 	}
 }
 
