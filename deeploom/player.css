@@ -65,6 +65,31 @@
 	overflow-x: hidden;
 }
 
+#divProgress {
+	background-color: #00F;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+#progressLoad {
+	background-color: #F00;
+}
+
+#progressPlay {
+	background-color: #0F0;
+}
+
+#progressText {
+	line-height: 60px; /*divControls height*/
+	pointer-events: none;
+}
+
+.progress {
+	height: 100%;
+	position: absolute;
+}
+
 .album {
 	clear: both;
 }
@@ -88,9 +113,9 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	display: inline-block;
 	width: 60px;
 	height: 100%;
+	float: left;
 }
 
 @media screen and (max-width: 800px) {
@@ -132,5 +157,8 @@
 	}
 	#divMain {
 		margin-bottom: 30px;
+	}
+	#progressText {
+		line-height: 30px;
 	}
 }

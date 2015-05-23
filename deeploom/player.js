@@ -7,6 +7,10 @@ window.onload = function () {
 	_playlist = document.getElementById("playlist");
 	_controls = document.getElementById("divControls");
 	_controlPlay = document.getElementById("controlPlay");
+	_progressBar = document.getElementById("divProgress");
+	_progressLoad = document.getElementById("progressLoad");
+	_progressPlay = document.getElementById("progressPlay");
+	_progressText = document.getElementById("progressText");
 	_controlPlayPause = "url(\"pause.svg\")"
 	_audio = document.getElementById("audio");
 	_sourceMp4 = document.getElementById("sourceMp4");
@@ -17,6 +21,10 @@ window.onload = function () {
 	_playlist.addEventListener("click", clickElement);
 	_audio.addEventListener("ended", playNext);
 	_audio.addEventListener("error", playNext);
+	_audio.addEventListener("progress", progressLoad);
+	_audio.addEventListener("timeupdate", progressPlay);
+	_progressLoad.addEventListener("click", progressClick);
+	_progressPlay.addEventListener("click", progressClick);
 }
 
 function menuShow() {
@@ -154,6 +162,36 @@ function playPrev() {
 	}
 	selectElement(element);
 }
+
+function progressLoad() {
+	try {
+		var load = ((100 / _audio.duration) * _audio.buffered.end(0));
+	} catch (err) {
+		var load = 100;
+	}
+	_progressLoad.style.width = load + "%";
+}
+
+function secondsString(time) {
+	time = Math.floor(time);
+	var minutes = time / 60;
+	minutes = Math.floor(minutes);
+	var seconds = time - minutes * 60;
+	seconds = Math.floor(seconds);
+	return minutes + ":" + seconds;
+}
+
+function progressPlay() {
+	var play = (100 / _audio.duration) * _audio.currentTime;
+	var time = secondsString(_audio.currentTime) + "/" + secondsString(_audio.duration);
+	_progressPlay.style.width = play + "%";
+	_progressText.innerHTML = time;
+}
+
+function progressClick(element) {
+	var time = (_audio.duration / 100) * (100 / _progressBar.clientWidth) * (element.clientX - _progressBar.offsetLeft);
+	_audio.currentTime = time;
+};
 
 //temp
 
