@@ -14,7 +14,7 @@ window.onload = function () {
 	_progressText = document.getElementById("progressText");
 	_controlPlayPause = "url(\"/pause.svg\")"
 	_audio = document.getElementById("audio");
-	_sourceMp4 = document.getElementById("sourceMp4");
+	_sourceMp3 = document.getElementById("sourceMp3");
 	_sourceOgg = document.getElementById("sourceOgg");
 	_tracks = _playlist.getElementsByClassName(_classTracks);
 	_selected = _playlist.getElementsByClassName(_classSelected);
@@ -47,7 +47,7 @@ function selectElement(element) {
 		element.classList.add(_classSelected);
 		var name = element.getAttribute("src");
 		if (name) {
-			_sourceMp4.setAttribute("src", "/getsource.php?id=" + name + "&format=null.mp4");
+			_sourceMp3.setAttribute("src", "/getsource.php?id=" + name + "&format=null.mp3");
 			_sourceOgg.setAttribute("src", "/getsource.php?id=" + name + "&format=null.ogg");
 			_metadata = false;
 			_audio.load();
@@ -112,7 +112,7 @@ function playlistAdd(json) {
 }
 
 function playPlay() {
-	if ( _sourceMp4.getAttribute("src") && _sourceOgg.getAttribute("src") ) {
+	if ( _sourceMp3.getAttribute("src") && _sourceOgg.getAttribute("src") ) {
 		_controlPlay.style.backgroundImage = _controlPlayPause;
 		_audio.play();
 	} else {
