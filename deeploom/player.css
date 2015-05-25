@@ -4,8 +4,19 @@
 	padding: 0;
 }
 
+body {
+	background-color: #EEE;
+	color: #111;
+}
+
+li {
+	list-style-image: none;
+	list-style-type: none;
+	list-style-position: outside;
+}
+
 #divSide {
-	background-color: #0FF;
+	background-color: #222;
 	top: 0;
 	left: 0;
 	bottom: 60px; /*divControls height*/
@@ -25,22 +36,17 @@
 }
 
 #divBar {
-	background-color: #F00;
+	background-color: #333;
 	display: none;
 	position: fixed;
 	top: 0;
 	width: 100%;
-	height: 20px;
-}
-
-#divPlaylist {
-	background-color: #00F;
-	color: #FFF;
-	padding: 5px;
+	height: 30px;
+	line-height: 30px;
 }
 
 #divControls {
-	background-color: #F0F;
+	background-color: #333;
 	position: fixed;
 	width: 100%;
 	height: 60px;
@@ -61,28 +67,51 @@
 }
 
 #playlist {
+	padding: 5px 0;
 	list-style-image: none;
 	overflow-x: hidden;
 }
 
 #divProgress {
-	background-color: #00F;
+	background-color: #444;
 	height: 100%;
 	position: relative;
 	overflow: hidden;
 }
 
 #progressLoad {
-	background-color: #F00;
+	background-color: #666;
 }
 
 #progressPlay {
-	background-color: #0F0;
+	background-color: #888;
 }
 
 #progressText {
+	color: #DDD;
+	padding: 0 10px;
 	line-height: 60px; /*divControls height*/
 	pointer-events: none;
+}
+
+.menuitem {
+	color: #888;
+	padding: 10px;
+	border-bottom: 1px solid #666;
+}
+
+.menuitem:hover {
+	background-color: #333;
+}
+
+.baritem {
+	float: left;
+	color: #DDD;
+	padding: 0 5px;
+}
+
+.baritem:hover, .baritem:focus {
+	background-color: #555;
 }
 
 .progress {
@@ -92,34 +121,48 @@
 
 .album {
 	clear: both;
+	padding-bottom: 10px;
 }
 
 .albumArt {
+	padding: 0 10px 10px 10px;
 	float: left;
 	width: 100px;
-	padding: 5px;
 }
 
 .albumTitle {
-	font-size: 1.2em;
+	font-weight: bold;
 }
 
 .albumList {
 	overflow: auto;
 }
 
-.selected {
-	font-weight: bold;
+.track {
+	color: #555;
+	padding: 5px 0;
+}
+
+.track:hover {
+	background-color: #DDD;
+}
+
+.track.selected {
+	background-color: #AAA;
+	color: #000;
 }
 
 .controls {
-	background-color: #0F0;
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
 	width: 60px;
 	height: 100%;
 	float: left;
+}
+
+.controls:hover {
+	background-color: #555;
 }
 
 @media screen and (max-width: 800px) {
@@ -132,8 +175,8 @@
 	#divBar {
 		display: block;
 	}
-	#divPlaylist {
-		margin-top: 20px; /*divBar height*/
+	#playlist {
+		margin-top: 30px; /*divBar height*/
 	}
 	#buttonHide {
 		display: block;
@@ -144,8 +187,12 @@
 	#divSide {
 		width: 100%;
 	}
+	.album {
+		padding-bottom: 5px;
+	}
 	.albumArt {
 		width: 50px;
+		padding: 0 5px 5px 5px;
 	}
 	.controls {
 		width: 33.3%;

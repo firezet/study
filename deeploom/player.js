@@ -14,7 +14,7 @@ window.onload = function () {
 	_progressText = document.getElementById("progressText");
 	_controlPlayPause = "url(\"/pause.svg\")"
 	_audio = document.getElementById("audio");
-	_sourceMp3 = document.getElementById("sourceMp3");
+	_sourceMpeg = document.getElementById("sourceMpeg");
 	_sourceOgg = document.getElementById("sourceOgg");
 	_tracks = _playlist.getElementsByClassName(_classTracks);
 	_selected = _playlist.getElementsByClassName(_classSelected);
@@ -24,6 +24,7 @@ window.onload = function () {
 	_audio.addEventListener("error", playNext);
 	_audio.addEventListener("progress", progressLoad);
 	_audio.addEventListener("timeupdate", progressPlay);
+	_progressBar.addEventListener("click", progressClick);
 	_progressLoad.addEventListener("click", progressClick);
 	_progressPlay.addEventListener("click", progressClick);
 	_audio.addEventListener("loadedmetadata", metadataLoad);
@@ -47,9 +48,12 @@ function selectElement(element) {
 		element.classList.add(_classSelected);
 		var name = element.getAttribute("src");
 		if (name) {
-			_sourceMp3.setAttribute("src", "/getsource.php?id=" + name + "&format=null.mp3");
+			_sourceMpeg.setAttribute("src", "/getsource.php?id=" + name + "&format=null.m4a");
 			_sourceOgg.setAttribute("src", "/getsource.php?id=" + name + "&format=null.ogg");
 			_metadata = false;
+			_progressLoad.style.width = "0%";
+			_progressPlay.style.width = "0%";
+			_progressText.innerHTML = "0:00";
 			_audio.load();
 			scrollElement(element);
 			playPlay();
@@ -84,8 +88,8 @@ function playlistAdd(json) {
 		if (tracks[x]["tracks"].length > 0) {
 			var album = document.createElement("div");
 			var albumArt = document.createElement("img");
-			var albumTitle = document.createElement("div");
-			var albumList = document.createElement("div");
+			var albumTitle = document.createElement("li");
+			var albumList = document.createElement("li");
 			album.setAttribute("class", "album");
 			albumArt.setAttribute("class", "albumArt");
 			albumArt.setAttribute("src", "getart.php?id=" + tracks[x]["art"]);
@@ -112,7 +116,7 @@ function playlistAdd(json) {
 }
 
 function playPlay() {
-	if ( _sourceMp3.getAttribute("src") && _sourceOgg.getAttribute("src") ) {
+	if ( _sourceMpeg.getAttribute("src") && _sourceOgg.getAttribute("src") ) {
 		_controlPlay.style.backgroundImage = _controlPlayPause;
 		_audio.play();
 	} else {
