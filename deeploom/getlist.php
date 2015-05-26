@@ -1,24 +1,44 @@
 <?php
+require_once("php/connect_db.php");
 
 $request = array();
-for ($x = 0; $x < 5; $x++) {
-	$tracks = array();
-	for ($y = 0; $y < 10; $y++) {
-		$tracks[] = array(
-			"number" => $x.$y,
-			"title" => "title".$y,
-			"artist" => "artist".$x.$y,
-			"src" => $x.$y
+$query = "SELECT * FROM artists";
+$artists = mysqli_query($db, $query);
+while ($artist = mysqli_fetch_assoc($artists)) {
+	$query = "SELECT * FROM albums WHERE id = ".intval($artist["id"]);
+	$albums = mysqli_query($db, $query);
+	while ($album = mysqli_fetch_assoc($albums)) {
+		$query = "SELECT name FROM genres WHERE id = ".intval($album["genre"]);
+		$genres = mysqli_query($db, $query);
+		$genre = mysqli_fetch_assoc($genres);
+		$query = "SELECT id, number, name, comment, artist FROM tracks WHERE album = ".intval($album["id"]);
+		$tracks = mysqli_query($db, $query);
+		$requestTracks = array();
+		while ($track = mysqli_fetch_assoc($tracks)) {
+			if (isset($track["artist"])) {
+				$query = "SELECT * FROM artists WHERE id = ".intval($track["artist"]);
+				$requestArtists = mysqli_query($db, $query);
+				$requestArtist = mysqli_fetch_assoc($requestArtists);
+			} else {
+				$requestArtist = NULL;
+			}
+			$requestTracks[] = array(
+				"number" => $track["number"],
+				"title" => $track["name"],
+				"comment" => $track["comment"],
+				"artist" => $requestArtist["name"],
+				"src" => $track["id"]
+			);
+		}
+		$request[] = array(
+			"artist" => $artist["name"],
+			"album" => $album["name"],
+			"art" => "null",
+			"year" => $album["year"],
+			"genre" => $genre["name"],
+			"tracks" => $requestTracks
 		);
 	}
-	$request[] = array(
-		"artist" => "artist".$x,
-		"album" => "album".$x,
-		"art" => "art".$x,
-		"year" => "200".$x,
-		"genre" => "genre".$x,
-		"tracks" => $tracks
-	);
 }
 
 echo json_encode($request);

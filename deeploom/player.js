@@ -48,8 +48,8 @@ function selectElement(element) {
 		element.classList.add(_classSelected);
 		var name = element.getAttribute("src");
 		if (name) {
-			_sourceMpeg.setAttribute("src", "/getsource.php?id=" + name + "&format=null.m4a");
-			_sourceOgg.setAttribute("src", "/getsource.php?id=" + name + "&format=null.ogg");
+			_sourceMpeg.setAttribute("src", "/getsource.php?id=" + name + "&name=null.m4a");
+			_sourceOgg.setAttribute("src", "/getsource.php?id=" + name + "&name=null.ogg");
 			_metadata = false;
 			_progressLoad.style.width = "0%";
 			_progressPlay.style.width = "0%";
@@ -99,9 +99,12 @@ function playlistAdd(json) {
 			for (y = 0; y < tracks[x]["tracks"].length; y++) {
 				var elem = tracks[x]["tracks"][y];
 				var track = document.createElement("li");
-				track.innerHTML = elem["number"] + " " + elem["title"];
+				track.innerHTML = elem["number"] + ". " + elem["title"];
+				if (elem["comment"]) {
+					track.innerHTML += " (" + elem["comment"] + ")";
+				}
 				if (elem["artist"]) {
-					track.innerHTML += " (" + elem["artist"] + ")"
+					track.innerHTML += " - " + elem["artist"];
 				}
 				track.setAttribute("src", elem["src"]);
 				track.classList.add(_classTracks);
