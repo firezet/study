@@ -195,10 +195,7 @@ li {
 		padding: 0 5px 5px 5px;
 	}
 	.controls {
-		width: 33.3%;
-	}
-	#divProgress {
-		display: none;
+		width: 25%;
 	}
 }
 

@@ -40,7 +40,7 @@ function menuHide() {
 
 function selectElement(element) {
 	if (element) {
-		for (x = _selected.length; x > 0; x--) {
+		for (var x = _selected.length; x > 0; x--) {
 			if (_selected[x - 1]) {
 				_selected[x - 1].classList.remove(_classSelected);
 			}
@@ -82,31 +82,39 @@ function playlistClear() {
 	_playlist.innerHTML = "";
 }
 
+function artistsString(artists) {
+	string = [];
+	for (var x = 0; x < artists.length; x++) {
+		string[x] = artists[x]["name"];
+	}
+	return string.sort().join(", ");
+}
+
 function playlistAdd(json) {
-	var tracks = JSON.parse(json);
-	for (x = 0; x < tracks.length; x++) {
-		if (tracks[x]["tracks"].length > 0) {
+	var albums = JSON.parse(json);
+	for (var x = 0; x < albums.length; x++) {
+		if (albums[x]["tracks"].length > 0) {
 			var album = document.createElement("div");
 			var albumArt = document.createElement("img");
 			var albumTitle = document.createElement("li");
 			var albumList = document.createElement("li");
 			album.setAttribute("class", "album");
 			albumArt.setAttribute("class", "albumArt");
-			albumArt.setAttribute("src", "getart.php?id=" + tracks[x]["albumid"]);
+			albumArt.setAttribute("src", "getart.php?id=" + albums[x]["id"]);
 			albumTitle.setAttribute("class", "albumTitle");
-			albumTitle.innerHTML = tracks[x]["artist"] + " - " + tracks[x]["album"] + " (" + tracks[x]["year"] + ", " + tracks[x]["genre"] + ")"
+			albumTitle.innerHTML = artistsString(albums[x]["artists"]) + " - " + albums[x]["name"] + " (" + albums[x]["year"] + ", " + albums[x]["genre"] + ")"
 			albumList.setAttribute("class", "albumList");
-			for (y = 0; y < tracks[x]["tracks"].length; y++) {
-				var elem = tracks[x]["tracks"][y];
+			for (var y = 0; y < albums[x]["tracks"].length; y++) {
+				var tracks = albums[x]["tracks"][y];
 				var track = document.createElement("li");
-				track.innerHTML = elem["number"] + ". " + elem["title"];
-				if (elem["comment"]) {
-					track.innerHTML += " (" + elem["comment"] + ")";
+				track.innerHTML = tracks["number"] + ". " + tracks["name"];
+				if (tracks["comment"]) {
+					track.innerHTML += " (" + tracks["comment"] + ")";
 				}
-				if (elem["artist"]) {
-					track.innerHTML += " - " + elem["artist"];
+				if (tracks["artists"].length > 0) {
+					track.innerHTML += " - " + artistsString(tracks["artists"]);
 				}
-				track.setAttribute("src", elem["trackid"]);
+				track.setAttribute("src", tracks["id"]);
 				track.classList.add(_classTracks);
 				albumList.appendChild(track);
 			}
@@ -141,6 +149,7 @@ function playPause() {
 }
 
 function playNext() {
+	playStop();
 	var element = _tracks[0];
 	if (_selected[0]) {
 		if (_selected[0].nextElementSibling) {
@@ -159,6 +168,7 @@ function playNext() {
 }
 
 function playPrev() {
+	playStop();
 	var element = _tracks[_tracks.length - 1];
 	if (_selected[0]) {
 		if (_selected[0].previousElementSibling) {
