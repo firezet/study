@@ -55,15 +55,15 @@ li {
 }
 
 #controlPrev {
-	background-image: url("/prev.svg");
+	background-image: url("/img/prev.svg");
 }
 
 #controlPlay {
-	background-image: url("/play.svg");
+	background-image: url("/img/play.svg");
 }
 
 #controlNext {
-	background-image: url("/next.svg");
+	background-image: url("/img/next.svg");
 }
 
 #playlist {

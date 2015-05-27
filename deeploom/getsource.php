@@ -1,5 +1,5 @@
 <?php
-require_once("php/connect_db.php");
+require_once("php/select_db.php");
 
 if (isset($_GET["id"])) {
 	$id = intval(sec_get("id"));
@@ -21,15 +21,15 @@ $query = "SELECT src FROM tracks WHERE id = ".$id;
 $track = mysqli_query($db, $query);
 $array = mysqli_fetch_assoc($track);
 
-http_response_code(404);
-
 if (isset($array["src"])) {
 	$src = "music/".$array["src"].$ext;
 	if (file_exists($src)) {
-		http_response_code(200);
 		header("Content-Type: ".$content);
-		header('X-Accel-Redirect: /'.$src);
+		header("X-Accel-Redirect: /".$src);
+		exit;
 	}
 }
+
+header("HTTP/1.0 404 Not Found");
 
 ?>

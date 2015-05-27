@@ -12,7 +12,7 @@ window.onload = function () {
 	_progressLoad = document.getElementById("progressLoad");
 	_progressPlay = document.getElementById("progressPlay");
 	_progressText = document.getElementById("progressText");
-	_controlPlayPause = "url(\"/pause.svg\")"
+	_controlPlayPause = "url(\"/img/pause.svg\")"
 	_audio = document.getElementById("audio");
 	_sourceMpeg = document.getElementById("sourceMpeg");
 	_sourceOgg = document.getElementById("sourceOgg");
@@ -92,7 +92,7 @@ function playlistAdd(json) {
 			var albumList = document.createElement("li");
 			album.setAttribute("class", "album");
 			albumArt.setAttribute("class", "albumArt");
-			albumArt.setAttribute("src", "getart.php?id=" + tracks[x]["art"]);
+			albumArt.setAttribute("src", "getart.php?id=" + tracks[x]["albumid"]);
 			albumTitle.setAttribute("class", "albumTitle");
 			albumTitle.innerHTML = tracks[x]["artist"] + " - " + tracks[x]["album"] + " (" + tracks[x]["year"] + ", " + tracks[x]["genre"] + ")"
 			albumList.setAttribute("class", "albumList");
@@ -106,7 +106,7 @@ function playlistAdd(json) {
 				if (elem["artist"]) {
 					track.innerHTML += " - " + elem["artist"];
 				}
-				track.setAttribute("src", elem["src"]);
+				track.setAttribute("src", elem["trackid"]);
 				track.classList.add(_classTracks);
 				albumList.appendChild(track);
 			}
