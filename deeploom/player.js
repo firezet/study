@@ -38,6 +38,10 @@ function menuHide() {
 	_menu.style.left = "";
 }
 
+function random(max) {
+	return Math.floor(Math.random() * max);
+}
+
 function selectElement(element) {
 	if (element) {
 		for (var x = _selected.length; x > 0; x--) {

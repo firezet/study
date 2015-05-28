@@ -80,6 +80,16 @@ function tracks_by_album($id) {
 	return $tracks;
 }
 
+function sort_by_field($array, $field) {
+	$sort = array();
+	foreach ($array as $key => $row)
+	{
+		$sort[$key] = $row[$field];
+	}
+	array_multisort($sort, SORT_ASC, $array);
+	return $array;
+}
+
 $request = array();
 $query = "SELECT * FROM albums ORDER BY year DESC";
 $albums = mysqli_query($db, $query);
@@ -87,6 +97,7 @@ while ($album = mysqli_fetch_assoc($albums)) {
 	$artists = artists_by_album($album["id"]);
 	$genre = genre_by_id($album["genre"]);
 	$tracks = tracks_by_album($album["id"]);
+	$tracks = sort_by_field($tracks, "number");
 	$request[] = array(
 		"artists" => $artists,
 		"id" => $album["id"],

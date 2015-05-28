@@ -1,9 +1,19 @@
 <?php
 
-$file = "img/album.svg";
-header("Accept-Ranges: bytes");
-header("Content-length: ".filesize($file));
-header("Content-Type: image/svg+xml");
-readfile($file);
+
+$src = "img/album.svg";
+$content = "image/svg+xml";
+
+if (isset($_GET["id"])) {
+	$id = intval($_GET["id"]);
+	$path = "music/".$id."/folder.jpg";
+	if (file_exists($path)) {
+		$src = $path;
+		$content = "image/jpeg";
+	}
+}
+
+header("Content-Type: ".$content);
+header("X-Accel-Redirect: /".$src);
 
 ?>

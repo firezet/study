@@ -17,12 +17,12 @@ if (isset($_GET["name"])) {
 	}
 }
 
-$query = "SELECT src FROM tracks WHERE id = ".$id;
+$query = "SELECT album, number FROM tracks WHERE id = ".$id;
 $track = mysqli_query($db, $query);
 $array = mysqli_fetch_assoc($track);
 
-if (isset($array["src"])) {
-	$src = "music/".$array["src"].$ext;
+if (isset($array["album"]) && isset($array["number"])) {
+	$src = "music/".$array["album"]."/".$array["number"].$ext;
 	if (file_exists($src)) {
 		header("Content-Type: ".$content);
 		header("X-Accel-Redirect: /".$src);
