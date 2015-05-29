@@ -2,7 +2,7 @@ window.onload = function () {
 	_metadata = false;
 	_classTracks = "track";
 	_classSelected = "selected";
-	_queryTracks = "." + _classTracks;
+	_shuffleArray = [];
 	_shuffleOn = "url(\"/img/shuffleon.svg\")";
 	_repeatOn = "url(\"/img/repeaton.svg\")";
 	_shuffle = document.getElementById("shuffle");
@@ -34,6 +34,7 @@ window.onload = function () {
 	_progressPlay.addEventListener("click", progressClick);
 	_audio.addEventListener("loadedmetadata", metadataLoad);
 	_audio.addEventListener("volumechange", volumeText);
+	document.addEventListener("keydown", hotkey);
 }
 
 function menuShow() {
@@ -45,7 +46,7 @@ function menuHide() {
 }
 
 function shuffleOn() {
-	if (_shuffle.style.backgroundImage == _shuffleOn) {
+	if (_shuffle.style.backgroundImage != "") {
 		return true;
 	} else {
 		return false;
@@ -53,7 +54,7 @@ function shuffleOn() {
 }
 
 function repeatOn() {
-	if (_repeat.style.backgroundImage == _repeatOn) {
+	if (_repeat.style.backgroundImage != "") {
 		return true;
 	} else {
 		return false;
@@ -63,6 +64,7 @@ function repeatOn() {
 function shuffleToggle() {
 	if (shuffleOn()) {
 		_shuffle.style.backgroundImage = "";
+		_shuffleArray = [];
 	} else {
 		_shuffle.style.backgroundImage = _shuffleOn;
 	}
@@ -86,6 +88,15 @@ function elementIndex(element) {
 			if (_tracks[x] === element) {
 				return x;
 			}
+		}
+	}
+	return -1;
+}
+
+function shuffleIndex(element) {
+	for (var x = 0; x < _shuffleArray.length; x++) {
+		if (_shuffleArray[x] == element) {
+			return x;
 		}
 	}
 	return -1;
@@ -223,41 +234,66 @@ function playPause() {
 
 function playNext() {
 	playStop();
-	var element = _tracks[0];
-	if (_selected[0]) {
-		if (_selected[0].nextElementSibling) {
-			element = _selected[0].nextElementSibling;
-		} else {
-			var nextParent = _selected[0].parentNode.parentNode.nextElementSibling;
-			if (nextParent) {
-				var nextChild = nextParent.querySelector(_queryTracks);
-				if (nextChild) {
-					element = nextChild;
-				}
-			}
+	if (shuffleOn()) {
+		shuffleNext();
+	} else {
+		var index = elementIndex(_selected[0]);
+		if (index >= _tracks.length - 1) {
+			index = -1;
 		}
+		selectElement(_tracks[index + 1]);
 	}
-	selectElement(element);
+}
+
+function shuffleCreate() {
+	if (_shuffleArray.length != _tracks.length) {
+		_shuffleArray=shuffleArray(createArray(_tracks.length));
+	}
+}
+
+function shuffleNext() {
+	shuffleCreate();
+	var index = elementIndex(_selected[0]);
+	var select = 0;
+	var arrayIndex = 0;
+	if (index < 0) {
+		index = _shuffleArray[_tracks.length - 1];
+	}
+	arrayIndex = shuffleIndex(index);
+	if (arrayIndex >= _tracks.length - 1) {
+		arrayIndex = -1
+	}
+	select = _shuffleArray[arrayIndex + 1];
+	selectElement(_tracks[select]);
+}
+
+function shufflePrev() {
+	shuffleCreate();
+	var index = elementIndex(_selected[0]);
+	var select = 0;
+	var arrayIndex = 0;
+	if (index < 0) {
+		index = _shuffleArray[0];
+	}
+	arrayIndex = shuffleIndex(index);
+	if (arrayIndex <= 0) {
+		arrayIndex = _tracks.length;
+	}
+	select = _shuffleArray[arrayIndex - 1];
+	selectElement(_tracks[select]);
 }
 
 function playPrev() {
 	playStop();
-	var element = _tracks[_tracks.length - 1];
-	if (_selected[0]) {
-		if (_selected[0].previousElementSibling) {
-			element = _selected[0].previousElementSibling;
-		} else {
-			var prevParent = _selected[0].parentNode.parentNode.previousElementSibling;
-			if (prevParent) {
-				var prevChilds = prevParent.querySelectorAll(_queryTracks);
-				var prevChild = prevChilds[prevChilds.length - 1];
-				if (prevChild) {
-					element = prevChild;
-				}
-			}
+	if (shuffleOn()) {
+		shufflePrev();
+	} else {
+		var index = elementIndex(_selected[0]);
+		if (index <= 0) {
+			index = _tracks.length;
 		}
+		selectElement(_tracks[index - 1]);
 	}
-	selectElement(element);
 }
 
 function progressLoad() {
@@ -318,6 +354,32 @@ function volumeDown() {
 
 function volumeText() {
 	_volumeText.innerHTML = Math.floor(_audio.volume * 100) + "%";
+}
+
+function hotkey(key) {
+	switch(key.keyCode) {
+		case 80:
+			playPause();
+			break;
+		case 75:
+			playPrev();
+			break;
+		case 76:
+			playNext();
+			break;
+		case 188:
+			volumeDown();
+			break;
+		case 190:
+			volumeUp();
+			break;
+		case 82:
+			repeatToggle();
+			break;
+		case 83:
+			shuffleToggle();
+			break;
+	}
 }
 
 //temp
