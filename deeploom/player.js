@@ -25,8 +25,8 @@ window.onload = function () {
 	_selected = _playlist.getElementsByClassName(_classSelected);
 
 	_playlist.addEventListener("click", clickElement);
-	_audio.addEventListener("ended", playNext);
-	_audio.addEventListener("error", playNext);
+	_audio.addEventListener("ended", eventNext);
+	_audio.addEventListener("error", eventNext);
 	_audio.addEventListener("progress", progressLoad);
 	_audio.addEventListener("timeupdate", progressPlay);
 	_progressBar.addEventListener("click", progressClick);
@@ -254,7 +254,6 @@ function shuffleCreate() {
 function shuffleNext() {
 	shuffleCreate();
 	var index = elementIndex(_selected[0]);
-	var select = 0;
 	var arrayIndex = 0;
 	if (index < 0) {
 		index = _shuffleArray[_tracks.length - 1];
@@ -263,14 +262,29 @@ function shuffleNext() {
 	if (arrayIndex >= _tracks.length - 1) {
 		arrayIndex = -1
 	}
-	select = _shuffleArray[arrayIndex + 1];
-	selectElement(_tracks[select]);
+	selectElement(_tracks[_shuffleArray[arrayIndex + 1]]);
+}
+
+function eventNext() {
+	playStop();
+	if (repeatOn()) {
+		playNext();
+	} else {
+		if (shuffleOn()) {
+			if (elementIndex(_selected[0]) != _shuffleArray[_tracks.length - 1]) {
+				playNext();
+			}
+		} else {
+			if (elementIndex(_selected[0]) != _tracks.length - 1) {
+				playNext();
+			}
+		}
+	}
 }
 
 function shufflePrev() {
 	shuffleCreate();
 	var index = elementIndex(_selected[0]);
-	var select = 0;
 	var arrayIndex = 0;
 	if (index < 0) {
 		index = _shuffleArray[0];
@@ -279,8 +293,7 @@ function shufflePrev() {
 	if (arrayIndex <= 0) {
 		arrayIndex = _tracks.length;
 	}
-	select = _shuffleArray[arrayIndex - 1];
-	selectElement(_tracks[select]);
+	selectElement(_tracks[_shuffleArray[arrayIndex - 1]]);
 }
 
 function playPrev() {
