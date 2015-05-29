@@ -7,6 +7,9 @@
 body {
 	background-color: #EEE;
 	color: #111;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
 li {
@@ -94,6 +97,44 @@ li {
 	pointer-events: none;
 }
 
+#divVolume {
+	float: right;
+	width: 120px;
+	height: 100%;
+	position: relative;
+}
+
+#volumeDown {
+	background-image: url("/img/down.svg");
+	background-position: 0 50%;
+}
+
+#volumeUp {
+	background-image: url("/img/up.svg");
+	background-position: 100% 50%;
+}
+
+#volumeText {
+	color: #DDD;
+	position: absolute;
+	width: 100%;
+	line-height: 60px;
+	text-align: center;
+	pointer-events: none;
+}
+
+.volume {
+	width: 50%;
+	height: 100%;
+	float: right;
+	background-size: 50% auto;
+	background-repeat: no-repeat;
+}
+
+.volume:hover {
+	background-color: #555;
+}
+
 .menuitem {
 	color: #888;
 	padding: 10px;
@@ -141,6 +182,7 @@ li {
 .track {
 	color: #555;
 	padding: 5px 0;
+	cursor: pointer;
 }
 
 .track:hover {
@@ -165,6 +207,18 @@ li {
 	background-color: #555;
 }
 
+#shuffle, #repeat {
+	float: right;
+}
+
+#shuffle {
+	background-image: url("/img/shuffle.svg");
+}
+
+#repeat {
+	background-image: url("/img/repeat.svg");
+}
+
 @media screen and (max-width: 800px) {
 	#divMain {
 		margin-left: 0;
@@ -180,6 +234,9 @@ li {
 	}
 	#buttonHide {
 		display: block;
+	}
+	#divVolume {
+		display: none;
 	}
 }
 
@@ -209,7 +266,7 @@ li {
 	#divMain {
 		margin-bottom: 30px;
 	}
-	#progressText {
+	#progressText, #volumeText {
 		line-height: 30px;
 	}
 }
