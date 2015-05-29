@@ -97,24 +97,23 @@ li {
 	pointer-events: none;
 }
 
-#divVolume {
+#divVolume, #divVolumeTop {
 	float: right;
-	width: 120px;
 	height: 100%;
 	position: relative;
 }
 
-#volumeDown {
+#volumeDown, #volumeDownTop {
 	background-image: url("/img/down.svg");
 	background-position: 0 50%;
 }
 
-#volumeUp {
+#volumeUp, #volumeUpTop {
 	background-image: url("/img/up.svg");
 	background-position: 100% 50%;
 }
 
-#volumeText {
+#volumeText, #volumeTextTop {
 	color: #DDD;
 	position: absolute;
 	width: 100%;
@@ -123,8 +122,12 @@ li {
 	pointer-events: none;
 }
 
+#volumeTextTop {
+	line-height: 30px;
+}
+
 .volume {
-	width: 50%;
+	width: 60px;
 	height: 100%;
 	float: right;
 	background-size: 50% auto;
@@ -143,15 +146,20 @@ li {
 
 .menuitem:hover {
 	background-color: #333;
+	cursor: pointer;
 }
 
-.baritem {
+#menuTop {
+	background-image: url("/img/menu.svg");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 100%;
 	float: left;
 	color: #DDD;
-	padding: 0 5px;
 }
 
-.baritem:hover, .baritem:focus {
+#menuTop:hover {
 	background-color: #555;
 }
 
@@ -168,7 +176,7 @@ li {
 .albumArt {
 	padding: 0 10px 10px 10px;
 	float: left;
-	width: 100px;
+	width: 200px;
 }
 
 .albumTitle {
@@ -191,6 +199,13 @@ li {
 
 .track.selected {
 	background-color: #AAA;
+}
+
+.trackName, .trackComment, .trackArtists {
+	pointer-events: none;
+}
+
+.track.selected > .trackName {
 	color: #000;
 }
 
@@ -207,16 +222,20 @@ li {
 	background-color: #555;
 }
 
-#shuffle, #repeat {
+#shuffle, #repeat, #shuffleTop, #repeatTop {
 	float: right;
 }
 
-#shuffle {
+#shuffle, #shuffleTop {
 	background-image: url("/img/shuffle.svg");
 }
 
-#repeat {
+#repeat, #repeatTop {
 	background-image: url("/img/repeat.svg");
+}
+
+.top {
+	width: 60px;
 }
 
 @media screen and (max-width: 800px) {
@@ -235,8 +254,11 @@ li {
 	#buttonHide {
 		display: block;
 	}
-	#divVolume {
+	#divVolume, #shuffle, #repeat {
 		display: none;
+	}
+	.albumArt {
+		width: 100px;
 	}
 }
 
@@ -251,8 +273,17 @@ li {
 		width: 50px;
 		padding: 0 5px 5px 5px;
 	}
-	.controls {
+	#controlPrev, #controlPlay, #controlNext {
 		width: 25%;
+	}
+	.top {
+		width: 20%;
+	}
+	#divVolumeTop {
+		width: 40%;
+	}
+	#volumeDownTop, #volumeUpTop {
+		width: 50%;
 	}
 }
 

@@ -6,7 +6,7 @@
 		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
 		<link rel="stylesheet" type="text/css" href="/player.css"/>
 		<script type="text/javascript" src="/player.js"></script>
-		<title>Music</title>
+		<title>Cactus Music</title>
 	</head>
 	<body>
 		<div id="divSide">
@@ -18,9 +18,14 @@
 		</div>
 		<div id="divMain">
 			<div id="divBar">
-				<ul>
-					<li class="baritem" onclick="menuShow()">Menu</li>
-				</ul>
+				<div id="divVolumeTop">
+					<div id="volumeUpTop" class="volume" onclick="volumeUp()"></div>
+					<div id="volumeDownTop" class="volume" onclick="volumeDown()"></div>
+					<div id="volumeTextTop">100%</div>
+				</div>
+				<div id="shuffleTop" class="controls top" onclick="shuffleToggle()"></div>
+				<div id="repeatTop" class="controls top" onclick="repeatToggle()"></div>
+				<div id="menuTop" class="top" onclick="menuShow()"></div>
 			</div>
 			<ul id="playlist">
 			</ul>
