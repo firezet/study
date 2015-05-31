@@ -73,6 +73,7 @@ li {
 	padding: 5px 0;
 	list-style-image: none;
 	overflow-x: hidden;
+	width: 100%;
 }
 
 #divProgress {
@@ -169,37 +170,55 @@ li {
 }
 
 .album {
-	clear: both;
 	padding-bottom: 10px;
 }
 
+.albumLeft {
+	text-align: right;
+	vertical-align: top;
+}
+
+.albumRight {
+	text-align: left;
+	vertical-align: top;
+	width: 100%;
+}
+
 .albumArt, .albumArtSmall {
-	padding: 0 10px 10px 10px;
-	float: left;
+	padding: 0 10px;
 	width: 200px;
 }
 
 .albumArtSmall {
 	width: 50px;
-	margin-left: 150px;
 }
 
 .albumTitle {
 	font-weight: bold;
+	padding: 5px 0;
 }
 
 .albumList {
-	overflow: auto;
+	width: 100%;
+}
+
+.deleteButton {
+	width: 40px;
+	background-image: url("/img/delete.svg");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+
+
+.track:hover, .deleteButton:hover {
+	background-color: #DDD;
 }
 
 .track {
 	color: #555;
 	padding: 5px 0;
 	cursor: pointer;
-}
-
-.track:hover {
-	background-color: #DDD;
 }
 
 .track.selected {
@@ -265,9 +284,6 @@ li {
 	.albumArt {
 		width: 100px;
 	}
-	.albumArtSmall {
-		margin-left: 50px;
-	}
 }
 
 @media screen and (max-width: 400px) {
@@ -279,10 +295,7 @@ li {
 	}
 	.albumArt, .albumArtSmall {
 		width: 50px;
-		padding: 0 5px 5px 5px;
-	}
-	.albumArtSmall {
-		margin-left: 0;
+		padding: 0 3px;
 	}
 	#controlPrev, #controlPlay, #controlNext {
 		width: 25%;

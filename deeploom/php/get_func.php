@@ -166,7 +166,7 @@ function get_artist($id) {
 
 function get_maximum() {
 	global $db;
-	$query = "SELECT id FROM tracks ORDER BY id DESC LIMIT 1";
+	$query = "SELECT COUNT(*) AS id FROM tracks";
 	$results = mysqli_query($db, $query);
 	while ($result = mysqli_fetch_assoc($results)) {
 		return intval($result["id"]);

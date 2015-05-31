@@ -154,12 +154,21 @@ function selectElement(element) {
 	}
 }
 
+function totalOffsetTop(element) {
+	var offset = element.offsetTop;
+	if (element.offsetParent) {
+		offset += totalOffsetTop(element.offsetParent);
+	}
+	return offset;
+}
+
 function scrollElement(element) {
 	if (element) {
 		var offsetTop = window.pageYOffset + _bar.offsetHeight;
 		var offsetBottom = window.pageYOffset + window.innerHeight - _controls.offsetHeight;
-		if ((element.offsetTop < offsetTop) || (element.offsetTop + element.offsetHeight > offsetBottom)) {
-			window.scrollTo(0, element.offsetTop + (element.offsetHeight / 2) - ((window.innerHeight - _controls.offsetHeight + _bar.offsetHeight) / 2));
+		var offset = totalOffsetTop(element);
+		if ((offset < offsetTop) || (offset + element.offsetHeight > offsetBottom)) {
+			window.scrollTo(0, offset + (element.offsetHeight / 2) - ((window.innerHeight - _controls.offsetHeight + _bar.offsetHeight) / 2));
 		}
 	}
 }
@@ -187,23 +196,34 @@ function playlistAdd(json) {
 	var albums = JSON.parse(json);
 	for (var x = 0; x < albums.length; x++) {
 		if (albums[x]["tracks"].length > 0) {
-			var album = document.createElement("div");
+			var album = document.createElement("tr");
+			var right = document.createElement("td");
+			var left = document.createElement("td");
 			var albumArt = document.createElement("img");
-			var albumTitle = document.createElement("li");
-			var albumList = document.createElement("li");
+			var albumTitle = document.createElement("tr");
+			var albumList = document.createElement("table");
 			album.setAttribute("class", "album");
 			if (albums[x]["tracks"].length > 1) {
 				albumArt.setAttribute("class", "albumArt");
 			} else {
 				albumArt.setAttribute("class", "albumArtSmall");
 			}
+			left.setAttribute("class", "albumLeft");
+			right.setAttribute("class", "albumRight");
 			albumArt.setAttribute("src", "getart.php?id=" + albums[x]["id"]);
-			albumTitle.setAttribute("class", "albumTitle");
-			albumTitle.innerHTML = artistsString(albums[x]["artists"]) + " - " + albums[x]["name"] + " (" + albums[x]["year"] + ", " + albums[x]["genre"] + ")"
+			albumTitle.innerHTML = "<td class=\"albumTitle\">" + artistsString(albums[x]["artists"]) + " - " + albums[x]["name"] + " (" + albums[x]["year"] + ", " + albums[x]["genre"] + ")</td>"
+			if (albums[x]["tracks"].length > 1) {
+				var deleteButton = document.createElement("td");
+				deleteButton.setAttribute("onclick", "deleteAlbum(this.parentNode.parentNode.parentNode.parentNode)");
+				deleteButton.setAttribute("class", "deleteButton");
+				albumTitle.appendChild(deleteButton);
+			}
 			albumList.setAttribute("class", "albumList");
+			albumList.appendChild(albumTitle);
 			for (var y = 0; y < albums[x]["tracks"].length; y++) {
 				var tracks = albums[x]["tracks"][y];
-				var track = document.createElement("li");
+				var trackRow = document.createElement("tr");
+				var track = document.createElement("td");
 				var trackName = document.createElement("span");
 				var trackComment = document.createElement("span");
 				var trackArtists = document.createElement("span");
@@ -222,11 +242,17 @@ function playlistAdd(json) {
 				}
 				track.setAttribute("src", tracks["id"]);
 				track.classList.add(_classTracks);
-				albumList.appendChild(track);
+				var deleteButton = document.createElement("td");
+				deleteButton.setAttribute("onclick", "deleteTrack(this.parentNode)");
+				deleteButton.setAttribute("class", "deleteButton");
+				trackRow.appendChild(track);
+				trackRow.appendChild(deleteButton);
+				albumList.appendChild(trackRow);
 			}
-			album.appendChild(albumArt);
-			album.appendChild(albumTitle);
-			album.appendChild(albumList);
+			left.appendChild(albumArt);
+			right.appendChild(albumList);
+			album.appendChild(left);
+			album.appendChild(right);
 			_playlist.appendChild(album);
 		}
 	}
@@ -408,6 +434,18 @@ function hotkey(key) {
 		case 83:
 			shuffleToggle();
 			break;
+	}
+}
+
+function deleteAlbum(element) {
+		element.parentNode.removeChild(element);
+}
+
+function deleteTrack(element) {
+	if (element.parentNode.getElementsByClassName(_classTracks).length < 2) {
+		deleteAlbum(element.parentNode.parentNode.parentNode);
+	} else {
+		element.parentNode.removeChild(element);
 	}
 }
 
