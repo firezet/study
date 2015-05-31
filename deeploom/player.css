@@ -173,10 +173,15 @@ li {
 	padding-bottom: 10px;
 }
 
-.albumArt {
+.albumArt, .albumArtSmall {
 	padding: 0 10px 10px 10px;
 	float: left;
 	width: 200px;
+}
+
+.albumArtSmall {
+	width: 50px;
+	margin-left: 150px;
 }
 
 .albumTitle {
@@ -260,6 +265,9 @@ li {
 	.albumArt {
 		width: 100px;
 	}
+	.albumArtSmall {
+		margin-left: 50px;
+	}
 }
 
 @media screen and (max-width: 400px) {
@@ -269,9 +277,12 @@ li {
 	.album {
 		padding-bottom: 5px;
 	}
-	.albumArt {
+	.albumArt, .albumArtSmall {
 		width: 50px;
 		padding: 0 5px 5px 5px;
+	}
+	.albumArtSmall {
+		margin-left: 0;
 	}
 	#controlPrev, #controlPlay, #controlNext {
 		width: 25%;

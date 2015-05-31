@@ -192,7 +192,11 @@ function playlistAdd(json) {
 			var albumTitle = document.createElement("li");
 			var albumList = document.createElement("li");
 			album.setAttribute("class", "album");
-			albumArt.setAttribute("class", "albumArt");
+			if (albums[x]["tracks"].length > 1) {
+				albumArt.setAttribute("class", "albumArt");
+			} else {
+				albumArt.setAttribute("class", "albumArtSmall");
+			}
 			albumArt.setAttribute("src", "getart.php?id=" + albums[x]["id"]);
 			albumTitle.setAttribute("class", "albumTitle");
 			albumTitle.innerHTML = artistsString(albums[x]["artists"]) + " - " + albums[x]["name"] + " (" + albums[x]["year"] + ", " + albums[x]["genre"] + ")"
@@ -413,12 +417,30 @@ function add() {
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
 			playlistAdd(xmlhttp.responseText);
 		}
 	}
-	xmlhttp.open("GET", "/getlist.php", true);
+	xmlhttp.open("GET", "/getartist.php?id=1", true);
+	xmlhttp.send();
+}
+
+function addRandom() {
+	var xmlhttp;
+	if (window.XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
+			playlistAdd(xmlhttp.responseText);
+		}
+	}
+	xmlhttp.open("GET", "/getrandom.php?count=10", true);
 	xmlhttp.send();
 }
