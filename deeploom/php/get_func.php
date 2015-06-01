@@ -189,4 +189,31 @@ function get_random($count) {
 	return $request;
 }
 
+function search_name($search) {
+	$array = array();
+	$search = str_replace(',', ' ', $search);
+	$search = str_replace('.', ' ', $search);
+	$search_array = explode(' ', $search);
+	foreach ($search_array as $elem) {
+		if (mb_strlen($elem) > 1) {
+			$array[] = "name LIKE \"%".$elem."%\"";
+		}
+	}
+	return implode(" AND ", $array);
+}
+
+function get_search($table, $name) {
+	global $db;
+	$request = array();
+	$search = search_name($name);
+	if ($search != NULL) {
+		$query = "SELECT * FROM ".$table." WHERE ".$search;
+		$results = mysqli_query($db, $query);
+		while ($result = mysqli_fetch_assoc($results)) {
+			$request[] = $result;
+		}
+	}
+	return $request;
+}
+
 ?>

@@ -262,6 +262,19 @@ li {
 	width: 60px;
 }
 
+#search {
+	background-color: #888;
+	width: 100%;
+	padding: 10px 10px;
+	box-sizing: border-box;
+	border-width: 0;
+	color: #555;
+}
+
+#search:focus {
+	background-color: #DDD;
+}
+
 @media screen and (max-width: 800px) {
 	#divMain {
 		margin-left: 0;

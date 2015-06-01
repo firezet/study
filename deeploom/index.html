@@ -12,9 +12,11 @@
 		<div id="divSide">
 			<ul>
 				<li class="menuitem" id="buttonHide" onclick="menuHide()">X</li>
-				<li class="menuitem" onclick="add()">Add all</li>
 				<li class="menuitem" onclick="addRandom()">Add random</li>
 				<li class="menuitem" onclick="playlistClear()">Clear playlist</li>
+				<input type="text" id="search" placeholder="Search" onkeydown="searchEnter(event)"></input>
+				<li class="menuitem" onclick="search()">Search</li>
+				<ul id="searchResult"></ul>
 			</ul>
 		</div>
 		<div id="divMain">
