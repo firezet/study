@@ -118,6 +118,9 @@ function get_track($id) {
 					"id" => $albums[$x]["id"],
 					"name" => $albums[$x]["name"],
 					"year" => $albums[$x]["year"],
+					"wiki" => $albums[$x]["wiki"],
+					"discogs" => $albums[$x]["discogs"],
+					"comment" => $albums[$x]["comment"],
 					"genre" => $genre,
 					"tracks" => $tracks
 				);
@@ -141,6 +144,9 @@ function get_album($id) {
 				"id" => $albums[$x]["id"],
 				"name" => $albums[$x]["name"],
 				"year" => $albums[$x]["year"],
+				"wiki" => $albums[$x]["wiki"],
+				"discogs" => $albums[$x]["discogs"],
+				"comment" => $albums[$x]["comment"],
 				"genre" => $genre,
 				"tracks" => $tracks
 			);
@@ -211,6 +217,23 @@ function get_search($table, $name) {
 		$results = mysqli_query($db, $query);
 		while ($result = mysqli_fetch_assoc($results)) {
 			$request[] = $result;
+		}
+	}
+	return $request;
+}
+
+function get_load($base) {
+	$request = array();
+	$decode = base64_decode($base);
+	if ($decode) {
+		$load = explode(";", $decode);
+		for ($x = 0; $x < count($load); $x++) {
+			$id = intval($load[$x]);
+			if ($id > 0) {
+				$result = get_track($id);
+				for ($y = 0; $y < count($result); $y++)
+				$request[] = $result[$y];
+			}
 		}
 	}
 	return $request;

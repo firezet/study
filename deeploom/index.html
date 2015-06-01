@@ -12,12 +12,18 @@
 		<div id="divSide">
 			<ul>
 				<li class="menuitem" id="buttonHide" onclick="menuHide()">X</li>
-				<li class="menuitem" onclick="addRandom()">Add random</li>
 				<li class="menuitem" onclick="playlistClear()">Clear playlist</li>
-				<input type="text" id="search" placeholder="Search" onkeydown="searchEnter(event)"></input>
+				<li class="menuitem" onclick="playlistSave()">Save playlist</li>
+				<li class="menuitem" onclick="playlistLoad()">Load playlist</li>
+				<li class="menuitem" onclick="addRandom()">Add random</li>
+				<input type="text" id="searchInput" placeholder="Search" onkeydown="searchEnter(event)"></input>
 				<li class="menuitem" onclick="search()">Search</li>
 				<ul id="searchResult"></ul>
 			</ul>
+		</div>
+		<div id="divSearch">
+			<li class="menuitem" onclick="searchHide()">X</li>
+			<table id="search"></table>
 		</div>
 		<div id="divMain">
 			<div id="divBar">
@@ -30,8 +36,7 @@
 				<div id="repeatTop" class="controls top" onclick="repeatToggle()"></div>
 				<div id="menuTop" class="top" onclick="menuShow()"></div>
 			</div>
-			<table id="playlist">
-			</table>
+			<table id="playlist"></table>
 		</div>
 		<div id="divControls">
 			<div id="controlPrev" class="controls" onclick="playPrev()"></div>

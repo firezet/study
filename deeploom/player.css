@@ -18,7 +18,7 @@ li {
 	list-style-position: outside;
 }
 
-#divSide {
+#divSide, #divSearch {
 	background-color: #222;
 	top: 0;
 	left: 0;
@@ -27,6 +27,14 @@ li {
 	overflow-y: auto;
 	position: fixed;
 	z-index: 25;
+}
+
+#divSearch {
+	background-color: #EEE;
+	width: 500px;
+	display: none;
+	z-index: 50;
+	border-right: solid 1px #222;
 }
 
 #buttonHide {
@@ -139,10 +147,15 @@ li {
 	background-color: #555;
 }
 
-.menuitem {
+.menuitem, .menuitemerror {
 	color: #888;
 	padding: 10px;
 	border-bottom: 1px solid #666;
+}
+
+.menuitemerror {
+	color: #888;
+	background-color: #500;
 }
 
 .menuitem:hover {
@@ -202,7 +215,7 @@ li {
 	width: 100%;
 }
 
-.deleteButton {
+.deleteButton, .addButton {
 	width: 40px;
 	background-image: url("/img/delete.svg");
 	background-repeat: no-repeat;
@@ -210,8 +223,11 @@ li {
 	background-position: center;
 }
 
+.addButton {
+	background-image: url("/img/add.svg");
+}
 
-.track:hover, .deleteButton:hover {
+.track:hover, .deleteButton:hover, .addButton:hover {
 	background-color: #DDD;
 }
 
@@ -219,6 +235,7 @@ li {
 	color: #555;
 	padding: 5px 0;
 	cursor: pointer;
+	border-bottom: solid 1px #AAA;
 }
 
 .track.selected {
@@ -262,17 +279,22 @@ li {
 	width: 60px;
 }
 
-#search {
+#searchInput {
 	background-color: #888;
 	width: 100%;
 	padding: 10px 10px;
 	box-sizing: border-box;
 	border-width: 0;
-	color: #555;
+	color: #333;
 }
 
-#search:focus {
+#searchInput:focus {
 	background-color: #DDD;
+}
+
+.wiki, .discogs, .addArtist {
+	height: 1em;
+	cursor: pointer;
 }
 
 @media screen and (max-width: 800px) {
@@ -280,7 +302,10 @@ li {
 		margin-left: 0;
 	}
 	#divSide {
-		left: -100%;
+		display: none;
+	}
+	#divSearch {
+		width: 400px;
 	}
 	#divBar {
 		display: block;
@@ -300,7 +325,7 @@ li {
 }
 
 @media screen and (max-width: 400px) {
-	#divSide {
+	#divSide, #divSearch {
 		width: 100%;
 	}
 	.album {
@@ -328,7 +353,7 @@ li {
 	#divControls {
 		height: 30px;
 	}
-	#divSide {
+	#divSide, #divSearch {
 		bottom: 30px;
 	}
 	#divMain {
