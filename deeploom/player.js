@@ -236,18 +236,72 @@ function artistsString(artists) {
 	return string.sort().join(", ");
 }
 
+function trackAdd(track, dest) {
+	var trackRow = document.createElement("tr");
+	var trackCell = document.createElement("td");
+	var trackName = document.createElement("span");
+	var trackComment = document.createElement("span");
+	var trackArtists = document.createElement("span");
+	trackName.innerHTML = track["number"] + ". " + track["name"];
+	trackName.classList.add("trackName");
+	trackCell.appendChild(trackName);
+	if (track["comment"]) {
+		trackComment.innerHTML = " (" + track["comment"] + ")";
+		trackComment.classList.add("trackComment");
+		trackCell.appendChild(trackComment);
+	}
+	if (track["artists"].length > 0) {
+		trackArtists.innerHTML += " - " + artistsString(track["artists"]);
+		trackArtists.classList.add("trackArtists");
+		trackCell.appendChild(trackArtists);
+	}
+	trackCell.setAttribute("src", track["id"]);
+	trackCell.classList.add(_classTracks);
+	trackRow.appendChild(trackCell);
+	if (dest == "playlist") {
+		var deleteButton = document.createElement("td");
+		deleteButton.setAttribute("onclick", "deleteTrack(this.parentNode)");
+		deleteButton.setAttribute("class", "deleteButton");
+		trackRow.appendChild(deleteButton);
+	} else {
+		var addButton = document.createElement("td");
+		addButton.setAttribute("onclick", "addTrack(" + track["id"] + ")");
+		addButton.setAttribute("class", "addButton");
+		trackRow.appendChild(addButton);
+	}
+	return trackRow;
+}
+
 function jsonAdd(json, dest) {
 	var albums = JSON.parse(json);
 	for (var x = 0; x < albums.length; x++) {
 		if (albums[x]["tracks"].length > 0) {
 			var albumRow = document.createElement("tr");
+			albumRow.setAttribute("class", "album");
+			albumRow.setAttribute("src", albums[x]["id"]);
+			if (dest == "playlist") {
+				var playlist = _playlist.getElementsByClassName("album");
+				if (playlist.length > 0) {
+					if (playlist[playlist.length - 1].getAttribute("src") === albumRow.getAttribute("src")) {
+						var albumList = playlist[playlist.length - 1].getElementsByClassName("albumList")[0];
+						var albumArt = playlist[playlist.length - 1].getElementsByClassName("albumLeft")[0].getElementsByClassName("albumArtSmall");
+						if (albumArt.length > 0) {
+							albumArt[0].setAttribute("class", "albumArt");
+						}
+						for (var y = 0; y < albums[x]["tracks"].length; y++) {
+							var trackRow = trackAdd(albums[x]["tracks"][y], dest)
+							albumList.appendChild(trackRow);
+						}
+						continue;
+					}
+				}
+			}
 			var albumArtCell = document.createElement("td");
 			var albumListCell = document.createElement("td");
 			var albumArt = document.createElement("img");
 			var albumList = document.createElement("table");
 			var albumTitleRow = document.createElement("tr");
 			var albumTitleCell = document.createElement("td");
-			albumRow.setAttribute("class", "album");
 			albumArtCell.setAttribute("class", "albumLeft");
 			if (albums[x]["tracks"].length > 1) {
 				albumArt.setAttribute("class", "albumArt");
@@ -292,39 +346,7 @@ function jsonAdd(json, dest) {
 			}
 			albumList.appendChild(albumTitleRow);
 			for (var y = 0; y < albums[x]["tracks"].length; y++) {
-				var track = albums[x]["tracks"][y];
-				var trackRow = document.createElement("tr");
-				var trackCell = document.createElement("td");
-				var trackName = document.createElement("span");
-				var trackComment = document.createElement("span");
-				var trackArtists = document.createElement("span");
-				trackName.innerHTML = track["number"] + ". " + track["name"];
-				trackName.classList.add("trackName");
-				trackCell.appendChild(trackName);
-				if (track["comment"]) {
-					trackComment.innerHTML = " (" + track["comment"] + ")";
-					trackComment.classList.add("trackComment");
-					trackCell.appendChild(trackComment);
-				}
-				if (track["artists"].length > 0) {
-					trackArtists.innerHTML += " - " + artistsString(track["artists"]);
-					trackArtists.classList.add("trackArtists");
-					trackCell.appendChild(trackArtists);
-				}
-				trackCell.setAttribute("src", track["id"]);
-				trackCell.classList.add(_classTracks);
-				trackRow.appendChild(trackCell);
-				if (dest == "playlist") {
-					var deleteButton = document.createElement("td");
-					deleteButton.setAttribute("onclick", "deleteTrack(this.parentNode)");
-					deleteButton.setAttribute("class", "deleteButton");
-					trackRow.appendChild(deleteButton);
-				} else {
-					var addButton = document.createElement("td");
-					addButton.setAttribute("onclick", "addTrack(" + track["id"] + ")");
-					addButton.setAttribute("class", "addButton");
-					trackRow.appendChild(addButton);
-				}
+				var trackRow = trackAdd(albums[x]["tracks"][y], dest);
 				albumList.appendChild(trackRow);
 			}
 			albumListCell.appendChild(albumList);
@@ -779,7 +801,6 @@ function save() {
 }
 
 function load(base) {
-	playlistClear();
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		xmlhttp = new XMLHttpRequest();
@@ -788,6 +809,7 @@ function load(base) {
 	}
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
+			playlistClear();
 			jsonAdd(xmlhttp.responseText, "playlist");
 		}
 	}
@@ -807,7 +829,6 @@ function sessionSave() {
 }
 
 function sessionLoad() {
-	playlistClear();
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		xmlhttp = new XMLHttpRequest();
@@ -816,6 +837,7 @@ function sessionLoad() {
 	}
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
+			playlistClear();
 			jsonAdd(xmlhttp.responseText, "playlist");
 		}
 	}
