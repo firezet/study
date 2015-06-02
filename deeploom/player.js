@@ -332,12 +332,10 @@ function jsonAdd(json, dest) {
 			}
 			albumTitleRow.appendChild(albumTitleCell);
 			if (dest == "playlist") {
-				if (albums[x]["tracks"].length > 1) {
-					var deleteButton = document.createElement("td");
-					deleteButton.setAttribute("onclick", "deleteAlbum(this.parentNode.parentNode.parentNode.parentNode)");
-					deleteButton.setAttribute("class", "deleteButton");
-					albumTitleRow.appendChild(deleteButton);
-				}
+				var deleteButton = document.createElement("td");
+				deleteButton.setAttribute("onclick", "deleteAlbum(this.parentNode.parentNode.parentNode.parentNode)");
+				deleteButton.setAttribute("class", "deleteButton");
+				albumTitleRow.appendChild(deleteButton);
 			} else {
 				var addButton = document.createElement("td");
 				addButton.setAttribute("onclick", "addAlbum(" + albums[x]["id"] + ")");
@@ -563,7 +561,6 @@ function deleteTrack(element) {
 		} else {
 			if (element.parentNode.getElementsByClassName(_classTracks).length < 3) {
 				element.parentNode.parentNode.parentNode.getElementsByClassName("albumArt")[0].setAttribute("class", "albumArtSmall");
-				element.parentNode.firstChild.removeChild(element.parentNode.getElementsByClassName("deleteButton")[0]);
 			}
 			element.parentNode.removeChild(element);
 		}
@@ -618,95 +615,6 @@ function searchEnter(event) {
 	}
 }
 
-function searchShowAjax(path) {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
-			jsonAdd(xmlhttp.responseText, "search");
-		}
-	}
-	xmlhttp.open("GET", path, true);
-	xmlhttp.send();
-}
-
-function playlistAjax(path) {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
-			jsonAdd(xmlhttp.responseText, "playlist");
-		}
-	}
-	xmlhttp.open("GET", path, true);
-	xmlhttp.send();
-}
-
-function searchArtistAjax(name) {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
-			searchArtistAdd(xmlhttp.responseText);
-			searchAlbumAjax(name);
-		}
-	}
-	xmlhttp.open("GET", "/getartists.php?name=" + name, true);
-	xmlhttp.send();
-}
-
-function searchAlbumAjax(name) {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
-			searchAlbumAdd(xmlhttp.responseText);
-			searchTrackAjax(name);
-		}
-	}
-	xmlhttp.open("GET", "/getalbums.php?name=" + name, true);
-	xmlhttp.send();
-}
-
-function searchTrackAjax(name) {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
-			searchTrackAdd(xmlhttp.responseText);
-			_searchInput.value = "";
-			if (_searchResult.getElementsByClassName("menuitem").length < 1) {
-				var item = document.createElement("li");
-				item.setAttribute("class", "menuitemerror");
-				item.innerHTML = "Nothing found";
-				_searchResult.appendChild(item);
-			}
-		}
-	}
-	xmlhttp.open("GET", "/gettracks.php?name=" + name, true);
-	xmlhttp.send();
-}
-
 function search() {
 	searchResultClear();
 	if (_searchInput.value.length < 2) {
@@ -721,32 +629,32 @@ function search() {
 
 function searchShowArtist(id) {
 	searchClear();
-	searchShowAjax("/getartist.php?id=" + id);
+	ajax("/getartist.php?id=" + id, function(json) {jsonAdd(json, "search");});
 	searchShow();
 }
 
 function searchShowAlbum(id) {
 	searchClear();
-	searchShowAjax("/getalbum.php?id=" + id);
+	ajax("/getalbum.php?id=" + id, function(json) {jsonAdd(json, "search");});
 	searchShow();
 }
 
 function searchShowTrack(id) {
 	searchClear();
-	searchShowAjax("/gettrack.php?id=" + id);
+	ajax("/gettrack.php?id=" + id, function(json) {jsonAdd(json, "search");});
 	searchShow();
 }
 
 function addArtist(id) {
-	playlistAjax("/getartist.php?id=" + id);
+	ajax("/getartist.php?id=" + id, function(json) {jsonAdd(json, "playlist");});
 }
 
 function addAlbum(id) {
-	playlistAjax("/getalbum.php?id=" + id);
+	ajax("/getalbum.php?id=" + id, function(json) {jsonAdd(json, "playlist");});
 }
 
 function addTrack(id) {
-	playlistAjax("/gettrack.php?id=" + id);
+	ajax("/gettrack.php?id=" + id, function(json) {jsonAdd(json, "playlist");});
 }
 
 function selectSearch(element) {
@@ -776,73 +684,12 @@ function clickSearch(element) {
 	}
 }
 
-function addRandom() {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
-			jsonAdd(xmlhttp.responseText, "playlist");
-		}
-	}
-	xmlhttp.open("GET", "/getrandom.php?count=" + 10, true);
-	xmlhttp.send();
-}
-
 function save() {
 	var save = String();
 	for (var x = 0; x < _tracks.length; x++) {
 		save += _tracks[x].getAttribute("src") + ";";
 	}
 	return btoa(save);
-}
-
-function load(base) {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
-			playlistClear();
-			jsonAdd(xmlhttp.responseText, "playlist");
-		}
-	}
-	xmlhttp.open("GET", "/load.php?base=" + base, true);
-	xmlhttp.send();
-}
-
-function sessionSave() {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.open("GET", "/sessionsave.php?base=" + save(), true);
-	xmlhttp.send();
-}
-
-function sessionLoad() {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
-			playlistClear();
-			jsonAdd(xmlhttp.responseText, "playlist");
-		}
-	}
-	xmlhttp.open("GET", "/sessionload.php", true);
-	xmlhttp.send();
 }
 
 function playlistSave() {
@@ -854,4 +701,65 @@ function playlistLoad() {
 	if (base != null) {
 		load(base);
 	}
+}
+
+function ajax(path, func, second) {
+	var xmlhttp;
+	if (window.XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	if (func) {
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200 ) {
+				if (second) {
+					func(xmlhttp.responseText, second);
+				} else {
+					func(xmlhttp.responseText);
+				}
+			}
+		}
+	}
+	xmlhttp.open("GET", path, true);
+	xmlhttp.send();
+}
+
+function sessionLoad() {
+	ajax("/sessionload.php", function(json) {playlistClear(); jsonAdd(json, "playlist");});
+}
+
+function sessionSave() {
+	ajax("/sessionsave.php?base=" + save());
+}
+
+function load(base) {
+	ajax("/load.php?base=" + base, function(json) {playlistClear(); jsonAdd(json, "playlist");});
+}
+
+function addRandom() {
+	ajax("/getrandom.php?count=" + 10, function(json) {jsonAdd(json, "playlist");});
+}
+
+function searchTrackAjaxJson(json) {
+	searchTrackAdd(json);
+	_searchInput.value = "";
+	if (_searchResult.getElementsByClassName("menuitem").length < 1) {
+		var item = document.createElement("li");
+		item.setAttribute("class", "menuitemerror");
+		item.innerHTML = "Nothing found";
+		_searchResult.appendChild(item);
+	}
+}
+
+function searchTrackAjax(name) {
+	ajax("/gettracks.php?name=" + name, searchTrackAjaxJson);
+}
+
+function searchArtistAjax(name) {
+	ajax("/getartists.php?name=" + name, function(json, name) {searchArtistAdd(json); searchAlbumAjax(name);}, name);
+}
+
+function searchAlbumAjax(name) {
+	ajax("/getalbums.php?name=" + name, function(json, name) {searchArtistAdd(json); searchTrackAjax(name);}, name);
 }
