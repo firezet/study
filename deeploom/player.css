@@ -148,13 +148,12 @@ li {
 }
 
 .menuitem, .menuitemerror {
-	color: #888;
+	color: #DDD;
 	padding: 10px;
 	border-bottom: 1px solid #666;
 }
 
 .menuitemerror {
-	color: #888;
 	background-color: #500;
 }
 
@@ -346,6 +345,9 @@ li {
 	}
 	#volumeDownTop, #volumeUpTop {
 		width: 50%;
+	}
+	.wiki, .discogs {
+		display: none;
 	}
 }
 

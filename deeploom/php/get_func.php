@@ -159,10 +159,12 @@ function get_artist($id) {
 	$request = array();
 	if ($id > 0) {
 		$albums = albums_by_artist($id);
+		$albums = sort_by_field($albums, "year");
 		for ($x = 0; $x < count($albums); $x++) {
 			$request[] = get_album($albums[$x]["id"])[0];
 		}
 		$tracks = tracks_by_artist($id);
+		$tracks = sort_by_field($tracks, "number");
 		for ($x = 0; $x < count($tracks); $x++) {
 			$request[] = get_track($tracks[$x]["id"])[0];
 		}

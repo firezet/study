@@ -168,9 +168,9 @@ function selectElement(element) {
 			_progressText.innerHTML = "0:00";
 			_audio.load();
 			scrollElement(element);
-			document.title = element.getElementsByClassName("trackName")[0].innerHTML;
-			if(element.getElementsByClassName("trackComment")[0]) {
-				document.title += element.getElementsByClassName("trackComment")[0].innerHTML;
+			document.title = element.querySelector(".trackName").innerHTML;
+			if(element.querySelector(".trackComment")) {
+				document.title += element.querySelector(".trackComment").innerHTML;
 			}
 			playPlay();
 		}
@@ -283,10 +283,10 @@ function jsonAdd(json, dest) {
 				var playlist = _playlist.getElementsByClassName("album");
 				if (playlist.length > 0) {
 					if (playlist[playlist.length - 1].getAttribute("src") === albumRow.getAttribute("src")) {
-						var albumList = playlist[playlist.length - 1].getElementsByClassName("albumList")[0];
-						var albumArt = playlist[playlist.length - 1].getElementsByClassName("albumLeft")[0].getElementsByClassName("albumArtSmall");
-						if (albumArt.length > 0) {
-							albumArt[0].setAttribute("class", "albumArt");
+						var albumList = playlist[playlist.length - 1].querySelector(".albumList");
+						var albumArt = playlist[playlist.length - 1].querySelector(".albumLeft").querySelector(".albumArtSmall");
+						if (albumArt) {
+							albumArt.setAttribute("class", "albumArt");
 						}
 						for (var y = 0; y < albums[x]["tracks"].length; y++) {
 							var trackRow = trackAdd(albums[x]["tracks"][y], dest)
@@ -560,7 +560,7 @@ function deleteTrack(element) {
 			deleteAlbumForce(element.parentNode.parentNode.parentNode);
 		} else {
 			if (element.parentNode.getElementsByClassName(_classTracks).length < 3) {
-				element.parentNode.parentNode.parentNode.getElementsByClassName("albumArt")[0].setAttribute("class", "albumArtSmall");
+				element.parentNode.parentNode.parentNode.querySelector(".albumArt").setAttribute("class", "albumArtSmall");
 			}
 			element.parentNode.removeChild(element);
 		}
@@ -668,9 +668,9 @@ function selectSearch(element) {
 			_progressPlay.style.width = "0%";
 			_progressText.innerHTML = "0:00";
 			_audio.load();
-			document.title = element.getElementsByClassName("trackName")[0].innerHTML;
-			if(element.getElementsByClassName("trackComment")[0]) {
-				document.title += element.getElementsByClassName("trackComment")[0].innerHTML;
+			document.title = element.querySelector(".trackName").innerHTML;
+			if(element.querySelector(".trackComment")) {
+				document.title += element.querySelector(".trackComment").innerHTML;
 			}
 			playPlay();
 		}
