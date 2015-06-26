@@ -16,13 +16,13 @@
 				<li class="menuitem" onclick="playlistSave()">Save playlist</li>
 				<li class="menuitem" onclick="playlistLoad()">Load playlist</li>
 				<li class="menuitem" onclick="addRandom()">Add random</li>
-				<input type="text" id="searchInput" placeholder="Search" onkeydown="searchEnter(event)"></input>
+				<input type="text" id="searchInput" placeholder="Search" onkeydown="searchEnter(event)"/>
 				<li class="menuitem" onclick="search()">Search</li>
-				<ul id="searchResult"></ul>
+				<li id="searchResult"></li>
 			</ul>
 		</div>
 		<div id="divSearch">
-			<li class="menuitem" onclick="searchHide()">X</li>
+			<div class="menuitem" onclick="searchHide()">X</div>
 			<table id="search"></table>
 		</div>
 		<div id="divMain">
